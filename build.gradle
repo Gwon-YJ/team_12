@@ -1,0 +1,43 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.4.5'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'org.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'com.mysql:mysql-connector-j' // Oracle 공식 MySQL JDBC 드라이버
+    // or
+    implementation 'mysql:mysql-connector-java:8.0.28' // 레거시 MySQL JDBC 드라이버
+    // or
+    implementation 'org.mariadb.jdbc:mariadb-java-client' // MariaDB 전용 드라이버
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
