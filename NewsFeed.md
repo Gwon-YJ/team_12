@@ -31,33 +31,28 @@ Content-type : application/json
 |----------|--------|--------|
 | title    | String | 게시글 제목 |
 | content  | String | 게시글 내용 |
-| Likescount    | int    | 좋아요 수  |
-| Todocount     | int    | 댓글 수   |
 
 
 ### 2. 요청예시
 ```json
 {
    "title" : "오늘도 짜증난다.",
-   "content" : "사랑합니다.",
-   "Likescount" : 90,
-   "Todocount" : 20
-  
+   "content" : "사랑합니다."
 }
 ```
 
 ### 3. 응답(Response)
-| 키           | 데이터타입  | 설명          |
-|-------------|--------|-------------|
-| data        | Object | 핵심데이터       |
-| status      | int    | 상태코드        |
-| id          | long   | 생성된 게시글 식별자 |
-| username    | String | 사용자이름       |
-| title       | String | 게시글 제목      |
-| content     | String | 게시글 내용      |
-| createdAt | Timestamp  | 생성날짜        |
-| Likescount    | int    | 좋아요 수       |
-| Todocount     | int    | 댓글 수        |
+| 키          | 데이터타입  | 설명          |
+|------------|--------|-------------|
+| data       | Object | 핵심데이터       |
+| status     | int    | 상태코드        |
+| id         | long   | 생성된 게시글 식별자 |
+| userName   | String | 사용자이름       |
+| title      | String | 게시글 제목      |
+| content    | String | 게시글 내용      |
+| likesCount | int    | 좋아요 수       |
+| todoCount  | int    | 댓글 수        |
+| createdAt  | Timestamp  | 생성날짜        |
 
 ### 응답 예시
 ```json
@@ -65,12 +60,12 @@ Content-type : application/json
    "status" : 200,
    "data" : {
      "id": 1,
-     "username" : "이형준",
+     "userName" : "이형준",
      "title" : "오늘도 짜증난다.",
      "content" : "사랑합니다.",
-     "createdAt": "2025-05-28 11:06:54",
-     "Likescount" : 90,
-     "Todocount" : 20
+     "likesCount" : 90,
+     "todoCount" : 20,
+     "createdAt": "2025-05-28 11:06:54"
    }   
 
 }
@@ -127,7 +122,7 @@ localhost:8080/posts/{postid}
 ### 1.설명
 | 키        | 데이터타입 | 설명     |
 |----------|-------|--------|
-| username | String | 사용자이름  |
+| userName | String | 사용자이름  |
 | title    | String | 게시글 제목 |
 | content  | String | 게시글 내용 | 
 
@@ -140,30 +135,30 @@ localhost:8080/posts/{postid}
 ```
 
 ### 3. 응답(Response)
-| 키           | 데이터타입  | 설명          |
-|-------------|--------|-------------|
-| data        | Object | 핵심데이터       |
-| status      | int    | 상태코드        |
-| username    | String | 사용자이름       |
-| title       | String | 게시글 제목      |
-| content     | String | 게시글 내용      |
-| creationData | Timestamp  | 생성날짜        |
-| modifiedDate | Timestamp  | 수정날짜        |
-| Likescount    | int    | 좋아요 수      |
-| Todocount     | int    | 댓글 수       |
+| 키            | 데이터타입  | 설명    |
+|--------------|--------|-------|
+| data         | Object | 핵심데이터 |
+| status       | int    | 상태코드  |
+| userName     | String | 사용자이름 |
+| title        | String | 게시글 제목 |
+| content      | String | 게시글 내용 |
+| likesCount   | int    | 좋아요 수 |
+| todoCount    | int    | 댓글 수  |
+| creationData | Timestamp  | 생성날짜  |
+| modifiedDate | Timestamp  | 수정날짜  |
 
 ### 응답 예시
 ```json
 {
    "status" : 200,
    "data" : {
-     "username": "이형준",
+     "userName": "이형준",
      "title": "오늘도 짜증난다2",
      "content": "사랑합니다2",
+     "likesCount" : 90,
+     "todoCount" : 20,
      "createdAt": "2025-05-28 11:06:54",
-     "modifiedAt": "2025-05-28 11:08:54",
-     "Likescount" : 90,
-     "Todocount" : 20
+     "modifiedAt": "2025-05-28 11:08:54"
    }   
 
 }
@@ -207,9 +202,9 @@ Content-type : application/json
 ## b. Param(파라미터 값이 필요한 경우)
 
 ### 1.설명
-| 키       | 데이터타입  | 설명      |
-|---------|--------|---------|
-| scheduleid  | int    | 게시글 식별자 |
+| 키       | 데이터타입  | 설명     |
+|---------|--------|--------|
+| postid  | int    | 게시글 식별자 |
 
 ```json
 localhost:8080/posts/{postid}
@@ -232,30 +227,30 @@ localhost:8080/posts/{postid}
 ```
 
 ### 3. 응답(Response)
-| 키           | 데이터타입  | 설명     |
-|-------------|--------|--------|
-| data        | Object | 핵심데이터  |
-| status      | int    | 상태코드   |
-| username    | String | 사용자이름  |
-| title       | String | 게시글 제목 |
-| content     | String | 게시글 내용 |
-| createdAt | Timestamp  | 생성날짜        |
+| 키          | 데이터타입  | 설명     |
+|------------|--------|--------|
+| data       | Object | 핵심데이터  |
+| status     | int    | 상태코드   |
+| userName   | String | 사용자이름  |
+| title      | String | 게시글 제목 |
+| content    | String | 게시글 내용 |
+| likesCount | int    | 좋아요 수  |
+| todoCount  | int    | 댓글 수   |
+| createdAt  | Timestamp  | 생성날짜        |
 | modifiedAt | Timestamp  | 수정날짜        |
-| Likescount    | int    | 좋아요 수  |
-| Todocount     | int    | 댓글 수   |
 
 ### 응답 예시
 ```json
 {
    "status" : 200,
    "data" : {
-     "username": "이형준",
+     "userName": "이형준",
      "title": "오늘도 짜증난다2",
      "content": "사랑합니다2",
+     "likesCount" : 90,
+     "todoCount" : 20,
      "createdAt": "2025-05-28 11:06:54",
-     "modifiedAt": "2025-05-28 11:08:54",
-     "Likescount" : 90,
-     "Todocount" : 20
+     "modifiedAt": "2025-05-28 11:08:54"
    }   
 
 }
@@ -324,30 +319,30 @@ localhost:8080/posts/{userId}
 ```
 
 ### 3. 응답(Response)
-| 키           | 데이터타입  | 설명     |
-|-------------|--------|--------|
-| data        | Object | 핵심데이터  |
-| status      | int    | 상태코드   |
-| username    | String | 사용자이름  |
+| 키           | 데이터타입  | 설명    |
+|-------------|--------|-------|
+| data        | Object | 핵심데이터 |
+| status      | int    | 상태코드  |
+| userName    | String | 사용자이름 |
 | title       | String | 게시글 제목 |
 | content     | String | 게시글 내용 |
-| createdAt | Timestamp  | 생성날짜        |
-| modifiedAt | Timestamp  | 수정날짜        |
-| Likescount    | int    | 좋아요 수  |
-| Todocount     | int    | 댓글 수   |
+| likesCount    | int    | 좋아요 수 |
+| todoCount     | int    | 댓글 수  |
+| createdAt | Timestamp  | 생성날짜  |
+| modifiedAt | Timestamp  | 수정날짜  |
 
 ### 응답 예시
 ```json
 {
    "status" : 200,
    "data" : {
-     "username": "홍길동",
+     "userName": "홍길동",
      "title": "테스트",
      "content": "사랑합니다",
+     "likesCount" : 90,
+     "todoCount" : 20,
      "createdAt": "2025-05-28 11:06:54",
-     "modifiedAt": "2025-05-28 11:08:54",
-     "Likescount" : 90,
-     "Todocount" : 20
+     "modifiedAt": "2025-05-28 11:08:54"
    }   
 
 }
@@ -391,9 +386,10 @@ Content-type : application/json
 ## b. Param(파라미터 값이 필요한 경우)
 
 ### 1.설명
-| 키 | 데이터타입 | 설명 |
-|---|-------|----|
-| - | -     | -  |
+| 키 | 데이터타입 | 설명        |
+|--|-------|-----------|
+| page | int   | 페이지 수     |
+| size | int   | 페이지 사이즈 수 |
 
 ```json
 
@@ -418,22 +414,22 @@ localhost:8080/posts?page=10&size=10
 ```
 
 ### 3. 응답(Response)
-| 키           | 데이터타입     | 설명           |
-|-------------|-----------|--------------|
-| data        | Object    | 핵심데이터        |
-| status      | int       | 상태코드         |
-| id          | long      | 생성된 게시글 식별자  |
-| username    | String    | 사용자이름        |
-| title       | String    | 게시글 제목       |
-| content     | String    | 게시글 내용       |
-| createdAt | Timestamp | 생성날짜         |
-| modifiedAt | Timestamp | 수정날짜         |
-| Likescount    | int       | 좋아요 수        |
-| Todocount     | int       | 댓글 수         |
-| page | int       | 현재 페이지 수     |
-| size | int       | 페이지 사이즈      |
-| totalElements    | int       | 모든 페이지 게시글 수 |
-| totalPages     | int       | 모든 페이지 수     |
+| 키             | 데이터타입     | 설명           |
+|---------------|-----------|--------------|
+| data          | Object    | 핵심데이터        |
+| status        | int       | 상태코드         |
+| id            | long      | 생성된 게시글 식별자  |
+| userName      | String    | 사용자이름        |
+| title         | String    | 게시글 제목       |
+| content       | String    | 게시글 내용       |
+| likesCount    | int       | 좋아요 수        |
+| todoCount     | int       | 댓글 수         |
+| createdAt     | Timestamp | 생성날짜         |
+| modifiedAt    | Timestamp | 수정날짜         |
+| page          | int       | 현재 페이지 수     |
+| size          | int       | 페이지 사이즈      |
+| totalElements | int       | 모든 페이지 게시글 수 |
+| totalPages    | int       | 모든 페이지 수     |
 
 ### 응답 예시
 ```json
@@ -441,23 +437,23 @@ localhost:8080/posts?page=10&size=10
    "status" : 200,
    "data" : [ {
      "id": 1,
-     "username": "이형준",
+     "userName": "이형준",
      "title": "오늘도 짜증난다",
      "content": "사랑합니다",
+     "likesCount" : 90,
+     "todoCount" : 20,
      "createdAt": "2025-05-28 11:06:54",
-     "modifiedAt": "2025-05-28 11:08:54",
-     "Likescount" : 90,
-     "Todocount" : 20
+     "modifiedAt": "2025-05-28 11:08:54"
    },
    {
      "id": 2,
-     "username": "이형준2",
+     "userName": "이형준2",
      "title": "오늘도 짜증난다2",
      "content": "사랑합니다2",
-     "createdAt": "2025-05-28 11:09:54",
-     "modifiedAt": "2025-05-28 11:11:54",
-     "Likescount" : 70,
-     "Todocount" : 20
+     "likesCount" : 70,
+     "todoCount" : 20,
+     "createdAt": "2025-05-28 11:06:54",
+     "modifiedAt": "2025-05-28 11:08:54",
    }
 ],
 "page" : {
@@ -507,9 +503,10 @@ Content-type : application/json
 ## b. Param(파라미터 값이 필요한 경우)
 
 ### 1.설명
-| 키 | 데이터타입 | 설명 |
-|---|-------|----|
-| - | -     | -  |
+| 키 | 데이터타입 | 설명    |
+|--|-----|-------|
+| startDate | int | 시작날짜  |
+| endDate | int | 마지막날짜 |
 
 ```json
   localhost:8080/posts?startDate = 20250528&endDate = 20250530 
@@ -532,18 +529,18 @@ Content-type : application/json
 ```
 
 ### 3. 응답(Response)
-| 키            | 데이터타입     | 설명          |
-|--------------|-----------|-------------|
-| data         | Object    | 핵심데이터       |
-| status       | int       | 상태코드        |
-| id           | long      | 생성된 게시글 식별자 |
-| userName     | String    | 사용자이름       |
-| title        | String    | 게시글 제목      |
-| content      | String    | 게시글 내용      |
-| createdAt | Timestamp  | 생성날짜        |
-| modifiedAt  | Timestamp  | 수정날짜        |
-| Likescount   | int       | 좋아요 수       |
-| Todocount    | int       | 댓글 수        |
+| 키          | 데이터타입     | 설명          |
+|------------|-----------|-------------|
+| data       | Object    | 핵심데이터       |
+| status     | int       | 상태코드        |
+| id         | long      | 생성된 게시글 식별자 |
+| userName   | String    | 사용자이름       |
+| title      | String    | 게시글 제목      |
+| content    | String    | 게시글 내용      |
+| likesCount | int       | 좋아요 수       |
+| todoCount  | int       | 댓글 수        |
+| createdAt  | Timestamp  | 생성날짜        |
+| modifiedAt | Timestamp  | 수정날짜        |
 
 ### 응답 예시
 ```json
@@ -551,23 +548,23 @@ Content-type : application/json
    "status" : 200,
    "data" : {
      "id": 1,
-     "username": "이형준",
+     "userName": "이형준",
      "title": "오늘도 짜증난다",
      "content": "사랑합니다",
+     "likesCount" : 90,
+     "todoCount" : 20,
      "createdAt": "2025-05-28 11:06:54",
-     "modifiedAt ": "2025-05-30 11:10:55",
-     "Likescount" : 90,
-     "Todocount" : 20
+     "modifiedAt ": "2025-05-30 11:10:55"
    },
    {
      "id": 2,
-     "username": "이형준",
+     "userName": "이형준",
      "title": "오늘도 짜증난다2",
      "content": "사랑합니다2",
-     "creationData": "2025-05-28 11:06:54",
-     "modifiedDate": "2025-05-28 11:12:58", 
-     "Likescount" : 70,
-     "Todocount" : 20
+     "likesCount" : 70,
+     "todoCount" : 20,
+     "createdAt": "2025-05-28 11:06:54",
+     "modifiedAt ": "2025-05-30 11:10:55"
    }
 ```
 ### b. 생성 실패 응답
@@ -691,14 +688,14 @@ Content-type : application/json
 
 | 키        | 데이터타입 | 설명    |
 |----------|-------|-------|
-| username | String | 사용자이름 |
+| userName | String | 사용자이름 |
 | email    | String | 사용자 이메일 |
 | password |String | 사용자 비밀번호 |
 
 ### 2. 요청예시
 ```json
 {
-   "username" : "이형준",
+   "userName" : "이형준",
    "email" : "xkrhd3@naver.com",
    "password" : 1234
 }
@@ -710,7 +707,7 @@ Content-type : application/json
 | data      | Object | 핵심데이터      |
 | status    | int    | 상태코드       |
 | id        | long   | 생성된 유저 식별자 |
-| username  | String | 사용자이름      |
+| userName  | String | 사용자이름      |
 | email     | String | 사용자 이메일   |
 
 ### 응답 예시
@@ -719,7 +716,7 @@ Content-type : application/json
    "status" : 200,
    "data" : {
      "id": 1,
-     "username": "이형준",
+     "userName": "이형준",
      "email" : "xkrhd3@naver.com"
    }   
 
@@ -777,14 +774,14 @@ localhost:8080/schedule/{userid}
 ### 1.설명
 | 키        | 데이터타입 | 설명       |
 |----------|-------|----------|
-| username| String | 사용자 이름   |
+| userName| String | 사용자 이름   |
 | email| String | 사용자 이메일  |
 | Password| String | 사용자 비밀번호 |
 
 ### 2. 요청예시
 ```json
 {
-  "username": "이형준",
+  "userName": "이형준",
   "email" : "xkrhd4@naver.com",
   "Password" : 12345
 }
@@ -795,7 +792,7 @@ localhost:8080/schedule/{userid}
 |-------------|--------|----|
 | status      | int    | 상태코드 |
 | id        | long   | 생성된 유저 식별자 |
-| username| String | 사용자 이름   |
+| userName| String | 사용자 이름   |
 | email| String | 사용자 이메일  |
 | Password| String | 사용자 비밀번호 |
 
@@ -805,7 +802,7 @@ localhost:8080/schedule/{userid}
   "status" : 200,
   "data" : {
     "id": 1,
-    "username": "이형준",
+    "userName": "이형준",
     "email" : "xkrhd4@naver.com"
   }
 }
@@ -879,7 +876,7 @@ localhost:8080/schedule/{userid}
 | data      | Object | 핵심데이터      |
 | status    | int    | 상태코드       |
 | id        | long   | 생성된 할일 식별자 |
-| username  | String | 사용자이름      |
+| userName  | String | 사용자이름      |
 | email     | String | 사용자 이메일    |
 
 ### 응답 예시
@@ -888,7 +885,7 @@ localhost:8080/schedule/{userid}
    "status" : 200,
    "data" : {
      "id": 1,
-     "username" : "이형준",
+     "userName" : "이형준",
      "email" : "xkrhd3@naver.com"
    }   
 
@@ -963,7 +960,7 @@ Content-type : application/json
 | data      | Object | 핵심데이터 |
 | status    | int    | 상태코드 |
 | id        | long   | 생성된 할일 식별자 |
-| username  | String | 사용자이름 |
+| userName  | String | 사용자이름 |
 | email     | String | 사용자 이메일 |
 
 ### 응답 예시
@@ -972,12 +969,12 @@ Content-type : application/json
    "status" : 200,
    "data" : {
    "id": 1,
-   "username" : "이형준",
+   "userName" : "이형준",
    "email" : "xkrhd3@naver.com",
    },
    {
    "id": 2,
-   "username" : "이형준2",
+   "userName" : "이형준2",
    "email" : "xkrhd4@naver.com",
    }
 ```
@@ -1532,14 +1529,14 @@ Content-type : application/json
 ```
 
 ### 3. 응답(Response)
-| 키            | 데이터타입  | 설명         |
-|--------------|--------|------------|
-| data         | Object | 핵심데이터      |
-| status       | int    | 상태코드       |
-| id           | bigint | 일정고유 식별자   | 
-| userid       | bigint   | 생성된 유저 식별자 |
-| scheduleid           | bigint   | 생성된 일정 식별자 |
-| comment |String| 생성 댓글      |
+| 키          | 데이터타입  | 설명         |
+|------------|--------|------------|
+| data       | Object | 핵심데이터      |
+| status     | int    | 상태코드       |
+| id         | bigint | 일정고유 식별자   | 
+| userId     | bigint   | 생성된 유저 식별자 |
+| scheduleId | bigint   | 생성된 일정 식별자 |
+| comment    |String| 생성 댓글      |
 
 ### 응답 예시
 ```json
@@ -1750,8 +1747,9 @@ Content-type : application/json
 ### 1.설명
 | 키       | 데이터타입  | 설명 |
 |---------|--------|----|
-| commentid  | int    | 유저 식별자 |
+| likeId  | int    | 유저 식별자 |
 
+### 2. 요청예시
 ```json
 localhost:8080/likes/{likeId}
 ```
@@ -1808,7 +1806,7 @@ localhost:8080/likes/{likeId}
 <!-- summary 아래 한칸 공백 두어야함 -->
 
 ## 00.개요<br>
-URL : /follow<br>
+URL : /follow/{targetUserId}<br>
 HTTP METHOD : POST<br>
 설명 : 팔로우를 생성하는 API 입니다.<br>
 
@@ -1826,9 +1824,19 @@ Content-type : application/json
 ## b. Param(파라미터 값이 필요한 경우)
 
 ### 1.설명
+| 키            | 데이터 타입 | 설명           |
+|---------------|--------------|----------------|
+| targetUserId  | Long         | 팔로우할 유저의 ID |
+
+### 2. 요청예시
+### 2. 요청예시
+```json
+localhost:8080/follow/{targetUserId}
+```
 
 ## c.body
 
+### 1. 설명
 | 키 | 데이터타입 | 설명 |
 |---|-------|---|
 | - | -     | - |
@@ -2116,17 +2124,4 @@ localhost:8080/Follow/{followId}
 }
 ```
 </details>
-
-
-## ERD 1
-![Image](https://github.com/user-attachments/assets/f3665d2e-fdd0-4bc5-b1ec-d8773d9bf2c7)
-
-## ERD 2
-![Image](https://github.com/user-attachments/assets/797e0ef3-2f97-4ab4-a875-8a6df9f6b99e)
-
-## ERD 3
-![Image](https://github.com/user-attachments/assets/33fbf917-513a-4974-b72d-34fb726d12ea)
-
-## ERD 7
-![Image](https://github.com/user-attachments/assets/8d11836f-f87b-465d-87f5-0ec07a899c84)
 
