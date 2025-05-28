@@ -22,6 +22,8 @@ public class Comment extends BaseEntity{
         this.comment =comment;
     }
 
+ // 테스트 커밋
+
     @ManyToOne
     @JoinColumn(name = "post_id")
     @Setter
