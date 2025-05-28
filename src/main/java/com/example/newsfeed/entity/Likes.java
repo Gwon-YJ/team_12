@@ -1,4 +1,4 @@
-package org.example.newsfeed.entity;
+package com.example.newsfeed.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -6,27 +6,22 @@ import lombok.Setter;
 
 @Getter
 @Entity
-@Table(name = "follow")
-public class Follow extends BaseEntity{
+@Table(name = "likse")
+public class Likes extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long followId;
+    private Long likseId;
 
 
     @Column(nullable = false)
-    private Long follows;
+    private Long likeCount;
 
-    public Follow(){}
+    public Likes(){}
 
-    public Follow(Long follows){
-        this.follows =follows;
+    public Likes(Long likeCount){
+        this.likeCount =likeCount;
     }
-
-    @ManyToOne
-    @JoinColumn(name = "like_id")
-    @Setter
-    private Likes like;
 
     @ManyToOne
     @JoinColumn(name = "comment_id")
@@ -42,5 +37,4 @@ public class Follow extends BaseEntity{
     @JoinColumn(name = "user_id")
     @Setter
     private User user;
-
 }

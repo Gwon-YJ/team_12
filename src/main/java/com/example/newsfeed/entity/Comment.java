@@ -1,4 +1,4 @@
-package org.example.newsfeed.entity;
+package com.example.newsfeed.entity;
 
 
 import jakarta.persistence.*;
@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Entity
 @Table(name = "comment")
-public class Comment extends BaseEntity{
+public class Comment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
