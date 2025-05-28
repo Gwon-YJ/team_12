@@ -20,12 +20,12 @@ public class User extends BaseEntity {
     private String emdil;
 
     @Column(nullable = false)
-    private int password;
+    private String password;
 
 
     public User(){}
 
-    public User(String username, String emdil, int password){
+    public User(String username, String emdil, String password){
         this.username = username;
         this.emdil = emdil;
         this.password = password;

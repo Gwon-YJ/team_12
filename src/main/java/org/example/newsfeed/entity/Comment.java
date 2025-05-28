@@ -14,11 +14,11 @@ public class Comment extends BaseEntity{
     private Long commentId;
 
     @Column(nullable = false)
-    private Long comment;
+    private String comment;
 
     public Comment(){}
 
-    public Comment(Long comment){
+    public Comment(String comment){
         this.comment =comment;
     }
 
