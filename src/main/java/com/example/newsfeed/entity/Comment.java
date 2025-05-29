@@ -10,7 +10,7 @@ import lombok.Getter;
 public class Comment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long commentId;
+    private Long id;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String comment; // 댓글 내용

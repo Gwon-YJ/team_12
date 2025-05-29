@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/comments")
 public class CommentController {
@@ -21,21 +23,21 @@ public class CommentController {
     // 댓글 생성
     @PostMapping
     public ResponseEntity<CommentResponseDto> saveComment(@RequestBody CommentRequestDto request) {
-        CommentResponseDto response = commentService.addComment(request);
+        CommentResponseDto response = commentService.saveComment(request.getComment());
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     // 댓글 조회
     @GetMapping("/{id}")
-    public ResponseEntity<CommentResponseDto> findById(@PathVariable Long id) {
-        CommentResponseDto response = commentService.CommentById(id);
+    public ResponseEntity<List<CommentResponseDto>> findById(@PathVariable Long id) {
+        List<CommentResponseDto> response = commentService.findComment(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // 댓글 수정
     @PutMapping("/{id}")
-    public ResponseEntity<Comment> update(@PathVariable Long id, @RequestBody CommentRequestDto request) {
-        Comment response = commentService.updateComment(id, request.getComment());
+    public ResponseEntity<CommentResponseDto> update(@PathVariable Long id, @RequestBody CommentRequestDto request) {
+        CommentResponseDto response = commentService.updateComment(id, request.getComment());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -43,6 +45,6 @@ public class CommentController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         commentService.deleteComment(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

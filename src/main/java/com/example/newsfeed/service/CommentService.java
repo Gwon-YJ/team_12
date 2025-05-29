@@ -1,5 +1,6 @@
 package com.example.newsfeed.service;
 
+import com.example.newsfeed.dto.CommentResponseDto;
 import com.example.newsfeed.entity.Comment;
 import com.example.newsfeed.repository.CommentRepository;
 import com.example.newsfeed.post.entity.Post;
@@ -10,6 +11,8 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentService {
@@ -25,7 +28,7 @@ public class CommentService {
     }
 
     // 댓글 생성
-    public void addComment(Long sessionId, Long postId, String content) {
+    public void saveComment(Long sessionId, Long postId, String comment) {
         Session session = sessionRepository.findById(sessionId)
                 .orElseThrow(() -> new EntityNotFoundException("세션이 없습니다."));
 
@@ -35,21 +38,26 @@ public class CommentService {
         Comment commentEntity = new Comment();
         commentEntity.setSession(session);
         commentEntity.setPost(post);
-        commentEntity.setContent(content); // 필드명이 comment가 아니라 content일 가능성 큼
+        commentEntity.setComment(comment);
 
         commentRepository.save(commentEntity);
     }
 
     // 댓글 조회
-    public List<Comment> findCommentsByPost(Long postId) {
-        return commentRepository.findByPostId(postId);
+    public List<CommentResponseDto> findComment(Long postId) {
+        List<Comment> commentList = commentRepository.findAllByPostIdOrderByModifiedAtDesc(postId);
+        List<CommentResponseDto> commentResponseDtoList = commentList.stream().map(comment -> new CommentResponseDto(comment)).collect(Collectors.toList());
+        return commentResponseDtoList;
     }
 
     // 댓글 수정
-    public Comment updateComment(Long commentId, String newContent) {
-        Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new EntityNotFoundException("댓글이 없습니다."));
-        comment.setContent(newContent);
+    public Comment updateComment(Long commentId, String comment) {
+        Optional<Comment> optionalComment = commentRepository.findById(commentId);
+        if(optionalComment.isEmpty()) {
+            throw new RuntimeException("값이 비어 있습니다.");
+        }
+
+        comment.setComment(comment);
         return commentRepository.save(comment);
     }
 
@@ -57,5 +65,6 @@ public class CommentService {
     public void deleteComment(Long commentId) {
         commentRepository.deleteById(commentId);
     }
+
 }
 
