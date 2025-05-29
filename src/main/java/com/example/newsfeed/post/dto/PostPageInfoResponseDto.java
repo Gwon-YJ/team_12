@@ -1,7 +1,10 @@
 package com.example.newsfeed.post.dto;
 
+import lombok.Getter;
+
 import java.util.List;
 
+@Getter
 public class PostPageInfoResponseDto<T> {
 
     private final List<T> contents;
@@ -16,5 +19,7 @@ public class PostPageInfoResponseDto<T> {
         this.size = size;
     }
 
-    public static <T> PostPageInfoResponseDto<T> toDto
+    public static <T> PostPageInfoResponseDto<T> toDto(List<T> contents, int page, int size){
+        return new PostPageInfoResponseDto<>(contents, page, size);
+    }
 }

@@ -1,13 +1,16 @@
 package com.example.newsfeed.post.repository;
 
-import com.example.newsfeed.entity.User;
+import com.example.newsfeed.post.dto.PostResponseDto;
 import com.example.newsfeed.post.entity.Post;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByUserId(Long userId);
 
-    Long user(User user);
+    // 주어진 시작일과 종료일 사이에 생성된 게시글 목록을 조회
+    List<Post> findAllByCreatedAtBetween(Timestamp startDate, Timestamp endDate, Sort sort);
 }
