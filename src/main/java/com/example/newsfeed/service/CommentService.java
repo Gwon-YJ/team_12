@@ -57,8 +57,10 @@ public class CommentService {
             throw new RuntimeException("값이 비어 있습니다.");
         }
 
-        comment.setComment(comment);
-        return commentRepository.save(comment);
+        Comment updateComment = optionalComment.get();
+        updateComment.setComment(comment);
+
+        return commentRepository.save(updateComment);
     }
 
     // 댓글 삭제
