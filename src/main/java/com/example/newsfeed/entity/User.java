@@ -1,10 +1,14 @@
-package org.example.newsfeed.entity;
+package com.example.newsfeed.entity;
 
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "user")
 public class User extends BaseEntity {
@@ -14,20 +18,17 @@ public class User extends BaseEntity {
     private Long userId;
 
     @Column(nullable = false,updatable = true)
-    private String username;
+    private String userName;
 
     @Column(nullable = false,updatable = true)
-    private String emdil;
+    private String email;
 
     @Column(nullable = false)
     private String password;
 
-
-    public User(){}
-
-    public User(String username, String emdil, String password){
-        this.username = username;
-        this.emdil = emdil;
+    public User(String userName, String email, String password){
+        this.userName = userName;
+        this.email = email;
         this.password = password;
     }
 
