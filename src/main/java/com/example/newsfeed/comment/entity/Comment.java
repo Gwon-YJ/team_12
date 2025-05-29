@@ -22,6 +22,11 @@ public class Comment extends BaseEntity {
         this.comment = comment;
     }
 
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "session_id")
+//    private Session session;
+
+
 //    @ManyToOne
 //    @JoinColumn(name = "post_id")
 //    private Post post;

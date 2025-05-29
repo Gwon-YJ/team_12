@@ -2,7 +2,6 @@ package com.example.newsfeed.comment.service;
 
 import com.example.newsfeed.comment.entity.Comment;
 import com.example.newsfeed.comment.repository.CommentRepository;
-import org.hibernate.event.spi.PostCollectionRecreateEvent;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,5 +27,12 @@ public class CommentService {
         comment.setPost(post);
 
         commentRepository.save(comment);
+
+
+        // 댓글 조회
+
+        // 댓글 수정
+
+        // 댓글 삭제
     }
 }
