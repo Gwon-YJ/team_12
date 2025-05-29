@@ -1,4 +1,4 @@
-package org.example.newsfeed.entity;
+package com.example.newsfeed.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
@@ -8,6 +8,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter
@@ -17,9 +18,9 @@ public class BaseEntity {
 
     @CreatedDate
     @Column(unique = false)
-    private LocalDateTime localDateTime;
+    private Timestamp createdAt;
 
     @LastModifiedDate
-    private LocalDateTime modifiedAt;
+    private Timestamp modifiedAt;
 
 }

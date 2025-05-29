@@ -1,28 +1,25 @@
-package org.example.newsfeed.entity;
+package com.example.newsfeed.entity;
 
-
+import com.example.newsfeed.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Entity
-@Table(name = "comment")
-public class Comment extends BaseEntity{
+@Table(name = "likes")
+public class Like extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long commentId;
+    private Long likeId;
 
-    @Column(nullable = false)
-    private Long comment;
+    public Like(){}
 
-    public Comment(){}
-
-    public Comment(Long comment){
-        this.comment =comment;
-    }
-
- // 테스트 커밋
+    @ManyToOne
+    @JoinColumn(name = "comment_id")
+    @Setter
+    private Comment comment;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
@@ -33,5 +30,4 @@ public class Comment extends BaseEntity{
     @JoinColumn(name = "user_id")
     @Setter
     private User user;
-
 }

@@ -1,4 +1,4 @@
-package org.example.newsfeed.entity;
+package com.example.newsfeed.entity;
 
 
 import jakarta.persistence.*;
@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User extends BaseEntity {
 
     @Id
@@ -17,7 +17,7 @@ public class User extends BaseEntity {
     private String username;
 
     @Column(nullable = false,updatable = true)
-    private String emdil;
+    private String email;
 
     @Column(nullable = false)
     private int password;
@@ -25,9 +25,9 @@ public class User extends BaseEntity {
 
     public User(){}
 
-    public User(String username, String emdil, int password){
+    public User(String username, String email, int password){
         this.username = username;
-        this.emdil = emdil;
+        this.email = email;
         this.password = password;
     }
 
