@@ -28,7 +28,7 @@ public class CommentController {
     // 댓글 조회
     @GetMapping("/{id}")
     public ResponseEntity<CommentResponseDto> findById(@PathVariable Long id) {
-        CommentResponseDto response = commentService.getCommentById(id);
+        CommentResponseDto response = commentService.CommentById(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
