@@ -1,15 +1,17 @@
 package com.example.newsfeed.comment.Dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
+@AllArgsConstructor
 public class CommentResponseDto {
-
-    private final Long postId;
-    private final String comment;
-
-    public CommentResponseDto(Long postId, String comment) {
-        this.postId = postId;
-        this.comment = comment;
-    }
+    private Long commentId;
+    private String author;
+    private String content;
+    private Long postId;
+    private Long sessionId;
+    private LocalDateTime createdAt;
 }
