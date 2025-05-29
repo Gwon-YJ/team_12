@@ -3,6 +3,7 @@ package com.example.newsfeed.controller;
 import com.example.newsfeed.dto.UserRequestDto;
 import com.example.newsfeed.dto.UserResponseDto;
 import com.example.newsfeed.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -35,20 +36,23 @@ public class UserController {
     }
 
     @PatchMapping("/{userId}")
-    public ResponseEntity<UserResponseDto> updateUser(@PathVariable Long userId, @Valid @RequestBody UserRequestDto.UpdateUser userRequestDto){
-        UserResponseDto resultDto = userService.updateUser(userId, userRequestDto);
+    public ResponseEntity<UserResponseDto> updateUser(@PathVariable Long userId, @Valid @RequestBody UserRequestDto.UpdateUser userRequestDto, HttpServletRequest httpServletRequest){
+        Long sessionId = (Long)httpServletRequest.getSession().getAttribute("sessionKey");
+        UserResponseDto resultDto = userService.updateUser(userId, sessionId, userRequestDto);
         return new ResponseEntity<>(resultDto, HttpStatus.OK);
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<String> updateUserPw(@PathVariable Long userId, @Valid @RequestBody UserRequestDto.UpdatePw userRequestDto){
-        userService.updateUserPw(userId, userRequestDto);
+    public ResponseEntity<String> updateUserPw(@PathVariable Long userId, @Valid @RequestBody UserRequestDto.UpdatePw userRequestDto, HttpServletRequest httpServletRequest){
+        Long sessionId = (Long)httpServletRequest.getSession().getAttribute("sessionKey");
+        userService.updateUserPw(userId, sessionId, userRequestDto);
         return new ResponseEntity<>("수정 성공", HttpStatus.OK);
     }
 
     @DeleteMapping("{userId}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long userId, @RequestBody UserRequestDto.DeleteUser userRequestDto){
-        userService.deleteUser(userId, userRequestDto);
+    public ResponseEntity<String> deleteUser(@PathVariable Long userId, @RequestBody UserRequestDto.DeleteUser userRequestDto, HttpServletRequest httpServletRequest){
+        Long sessionId = (Long)httpServletRequest.getSession().getAttribute("sessionKey");
+        userService.deleteUser(userId, sessionId, userRequestDto);
         return new ResponseEntity<>("수정 성공", HttpStatus.OK);
     }
 }

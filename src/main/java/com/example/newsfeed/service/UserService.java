@@ -45,8 +45,9 @@ public class UserService {
         return userResponseDto;
     }
 
-    public UserResponseDto updateUser(Long userId, UserRequestDto.UpdateUser userRequestDto) {
-        //api 명세에 보면 url 경로에 userId를 받기 때문에 request param 아니고 path variable인 것 같습니다.
+    public UserResponseDto updateUser(Long userId, Long sessionId, UserRequestDto.UpdateUser userRequestDto) {
+        if(!userId.equals(sessionId))
+            throw new RuntimeException("접근 권한이 없습니다.");
         Optional<User> optionalUser = userRepository.findById(userId);
         //isEmpty()에 대한 커스텀 예외처리 할 예정
         User user = optionalUser.get();
@@ -64,8 +65,9 @@ public class UserService {
         return userResponseDto;
     }
 
-    public void updateUserPw(Long userId, UserRequestDto.UpdatePw userRequestDto) {
-        //api 명세에 보면 url 경로에 userId를 받기 때문에 request param 아니고 path variable인 것 같습니다.
+    public void updateUserPw(Long userId, Long sessionId, UserRequestDto.UpdatePw userRequestDto) {
+        if(!userId.equals(sessionId))
+            throw new RuntimeException("접근 권한이 없습니다.");
         Optional<User> optionalUser = userRepository.findById(userId);
         //isEmpty()에 대한 커스텀 예외처리 할 예정
         User user = optionalUser.get();
@@ -77,8 +79,9 @@ public class UserService {
         }
     }
 
-    public void deleteUser(Long userId, UserRequestDto.DeleteUser userRequestDto) {
-        //api 명세에 보면 url 경로에 userId를 받기 때문에 request param 아니고 path variable인 것 같습니다.
+    public void deleteUser(Long userId, Long sessionId, UserRequestDto.DeleteUser userRequestDto) {
+        if(!userId.equals(sessionId))
+            throw new RuntimeException("접근 권한이 없습니다.");
         Optional<User> optionalUser = userRepository.findById(userId);
         //isEmpty()에 대한 커스텀 예외처리 할 예정
         User user = optionalUser.get();
