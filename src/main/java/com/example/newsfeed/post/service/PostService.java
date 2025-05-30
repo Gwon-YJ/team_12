@@ -9,10 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,7 +27,7 @@ public class PostService {
     public PostResponseDto createPost(Long userId, String title, String content) {
 
 //        User user = userRepository.findById(userId)
-//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저가 존재하지 않습니다."));
+//                .orElseThrow(() -> new CustomException(ErrorType.ENTITY_NOT_FOUND));
 
 //        Post post = new Post(title, content, user);
 
@@ -53,29 +51,31 @@ public class PostService {
     public PostResponseDto updatePost(Long postId, Long userId, String title, String content) {
 
         // 입력받은 postId를 찾아서 post 변수에 저장
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글을 찾을 수 없습니다."));
+//        Post post = postRepository.findById(postId)
+//                .orElseThrow(() -> new CustomException(ErrorType.ENTITY_NOT_FOUND));
 
         // 지금 게시글을 쓴 유저 id 와 입력받은 유저 id 가 다르면 예외처리
-        if (!post.getUser().getUserId().equals(userId)) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "작성자만 게시글을 수정할 수 있습니다.");
-        }
+//        if (!post.getUser().getUserId().equals(userId)) {
+//            throw new CustomException(ErrorType.ACCESS_DENIED);
+//        }
+//
+//        post.setTitle(title);
+//        post.setContent(content);
+//
+//        // 변경된 post 를 DB에 저장하고 저장된 결과를 updatedPost 에 저장
+//        Post updatedPost = postRepository.save(post);
 
-        post.setTitle(title);
-        post.setContent(content);
+//        return new PostResponseDto(
+//                updatedPost.getPostId(),
+//                updatedPost.getUser().getUsername(),
+//                updatedPost.getTitle(),
+//                updatedPost.getContent(),
+//                updatedPost.getLikesCount(),
+//                updatedPost.getCommentsCount(),
+//                updatedPost.getCreatedAt(),
+//                updatedPost.getModifiedAt());
 
-        // 변경된 post 를 DB에 저장하고 저장된 결과를 updatedPost 에 저장
-        Post updatedPost = postRepository.save(post);
-
-        return new PostResponseDto(
-                updatedPost.getPostId(),
-                updatedPost.getUser().getUsername(),
-                updatedPost.getTitle(),
-                updatedPost.getContent(),
-                updatedPost.getLikesCount(),
-                updatedPost.getCommentsCount(),
-                updatedPost.getCreatedAt(),
-                updatedPost.getModifiedAt());
+        return null; // <- 임시로 지정해놓은 리턴값, 위에 주석 해제 후 삭제
 
     }
 
@@ -83,7 +83,7 @@ public class PostService {
     public List<PostResponseDto> userPosts(Long userId) {
 
 //        if(!userRepository.existsById(userId)){
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 유저가 존재하지 않습니다.");
+//            throw new CustomException(ErrorType.ENTITY_NOT_FOUND);
 //        }
 
         return postRepository.findByUserId(userId)
@@ -125,13 +125,13 @@ public class PostService {
     // 게시글 삭제
     @Transactional
     public void deletePost(Long postId, Long userId) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "일정을 찾을 수 없습니다."));
+//        Post post = postRepository.findById(postId)
+//                .orElseThrow(() -> new CustomException(ErrorType.ENTITY_NOT_FOUND));
+//
+//        if(!post.getUser().getUserId().equals(userId)){
+//            throw new CustomException(ErrorType.ACCESS_DENIED);
+//        }
 
-        if(!post.getUser().getUserId().equals(userId)){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "작성자만 게시글을 삭제할 수 있습니다.");
-        }
-
-        postRepository.delete(post);
+//        postRepository.delete(post);
     }
 }
