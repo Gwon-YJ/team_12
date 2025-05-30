@@ -1,7 +1,6 @@
 package com.example.newsfeed.utils;
 
 
-
 import com.example.newsfeed.enums.UserRoleEnum;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -9,6 +8,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 
 import java.security.Key;
 import java.util.Base64;

@@ -1,5 +1,6 @@
 package com.example.newsfeed.config;
 
+
 import com.example.newsfeed.filer.JwtFilter;
 import com.example.newsfeed.utils.JwtUtil;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
