@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -82,8 +82,9 @@ public class PostService {
     // 특정 유저 게시글 조회
     public List<PostResponseDto> userPosts(Long userId) {
 
-//       userRepository.findById(userId)
-//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 유저가 존재하지 않습니다."));
+//        if(!userRepository.existsById(userId)){
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 유저가 존재하지 않습니다.");
+//        }
 
         return postRepository.findByUserId(userId)
                 .stream()
@@ -92,7 +93,7 @@ public class PostService {
     }
 
     // 게시글 페이징 조회(게시물을 최신순으로) 추후에 팔로우한 사람들만 보이게 수정 예정
-    public PostPageInfoResponseDto<PostPageResponseDto> pagingPosts(int page, int size) {
+    public PostPageInfoResponseDto pagingPosts(int page, int size) {
 
         Page<Post> postPage = postRepository.findAll(PageRequest.of(page - 1, size, Sort.by("createdAt").descending()));
 
@@ -104,12 +105,14 @@ public class PostService {
         return PostPageInfoResponseDto.toDto(
                 list,
                 page,
-                size
+                size,
+                postPage.getTotalPages(),
+                postPage.getTotalElements()
         );
     }
 
     // 게시글 날짜 범위로 검색
-    public List<PostResponseDto> searchPostsByDateRange(Timestamp startDate, Timestamp endDate) {
+    public List<PostResponseDto> searchPostsByDateRange(LocalDateTime startDate, LocalDateTime endDate) {
 
         Sort sort = Sort.by(Sort.Direction.DESC, "modifiedAt");
 
