@@ -40,8 +40,6 @@ Content-type : application/json
 ### 3. 응답(Response)
 | 키             | 데이터타입  | 설명          |
 |---------------|--------|-------------|
-| data          | Object | 핵심데이터       |
-| status        | int    | 상태코드        |
 | postId        | long   | 생성된 게시글 식별자 |
 | userName      | String | 사용자이름       |
 | title         | String | 게시글 제목      |
@@ -108,7 +106,7 @@ Content-type : application/json
 ### 1.설명
 | 키      | 데이터타입  | 설명      |
 |--------|--------|---------|
-| PostId | int    | 게시글 식별자 |
+| PostId | long    | 게시글 식별자 |
 
 ```json
 localhost:8080/posts/{postId}
@@ -133,8 +131,6 @@ localhost:8080/posts/{postId}
 ### 3. 응답(Response)
 | 키            | 데이터타입  | 설명    |
 |--------------|--------|-------|
-| data         | Object | 핵심데이터 |
-| status       | int    | 상태코드  |
 | postId     | long   | 생성된 게시글 식별자 |
 | userName     | String | 사용자이름 |
 | title        | String | 게시글 제목 |
@@ -167,11 +163,12 @@ localhost:8080/posts/{postId}
 ### 실패 응답 예시
 ```json
 {
-   "status" : "404",
   //게시글이 없을 시
+   "status" : "404",
    "message" : "게시글을 찾을 수 없습니다.",
   //유저가 없을시
-  "message" : "작성자만 게시글을 수정할 수 있습니다."
+   "status" : "403",
+   "message" : "작성자만 게시글을 수정할 수 있습니다."
 }
 ```
 </details>
@@ -201,7 +198,7 @@ Content-type : application/json
 ### 1.설명
 | 키      | 데이터타입  | 설명     |
 |--------|--------|--------|
-| userId | int    | 게시글 식별자 |
+| userId | long    | 게시글 식별자 |
 
 ```json
 localhost:8080/posts/{userId}
@@ -283,8 +280,6 @@ localhost:8080/posts?page=1&size=10
 ### 3. 응답(Response)
 | 키             | 데이터타입     | 설명           |
 |---------------|-----------|--------------|
-| contents      | Object    | 핵심데이터        |
-| status        | int       | 상태코드         |
 | postId        | long      | 생성된 게시글 식별자  |
 | userName      | String    | 사용자이름        |
 | title         | String    | 게시글 제목       |
@@ -425,7 +420,7 @@ Content-type : application/json
 ### 1.설명
 | 키      | 데이터타입  | 설명      |
 |--------|--------|---------|
-| postId | int    | 게시글 식별자 |
+| postId | long    | 게시글 식별자 |
 
 ```json
 localhost:8080/posts/{postId}
@@ -440,11 +435,12 @@ localhost:8080/posts/{postId}
 ### 실패 응답 예시
 ```json
 {
-   "status" : "404",
   //게시글이 없을시
+   "status" : "404",
    "message" : "게시글을 찾을 수 없습니다.",
   //유저가 없을시
-  "message" : "작성자만 게시글을 수정할 수 있습니다."
+   "status" : "403",
+   "message" : "작성자만 게시글을 수정할 수 있습니다."
 }
 ```
 </details>
@@ -471,10 +467,6 @@ HTTP METHOD : POST<br>
 ### 2. 예시
 Content-type : application/json
 
-## b. Param(파라미터 값이 필요한 경우)
-
-### 1.설명
-
 ## c.body
 
 | 키        | 데이터타입 | 설명    |
@@ -495,8 +487,6 @@ Content-type : application/json
 ### 3. 응답(Response)
 | 키         | 데이터타입  | 설명         |
 |-----------|--------|------------|
-| data      | Object | 핵심데이터      |
-| status    | int    | 상태코드       |
 | id        | long   | 생성된 유저 식별자 |
 | userName  | String | 사용자이름      |
 | email     | String | 사용자 이메일   |
@@ -506,15 +496,11 @@ Content-type : application/json
 ### 응답 예시
 ```json
 {
-   "status" : 200,
-   "data" : {
      "id": 1,
      "userName": "이형준",
      "email" : "xkrhd3@naver.com",
      "createdAt" : "2025-05-30 16:00:47",
      "modifiedAt" : "2025-05-30 16:00:47"
-   }   
-
 }
 ```
 ### b. 생성 실패 응답
@@ -527,8 +513,12 @@ Content-type : application/json
 ### 실패 응답 예시
 ```json
 {
-   "status" : "404",
-   "message" : "해당 유저를 찾을 수 없습니다."
+  //유저이름&이메일&비밀번호 형식에 맞지 않을때
+   "status" : "401",
+   "message" : "형식을 준수해서 입력해야합니다.",
+  //동일한 이메일 등록 시도 시
+   "status" : "400",
+   "message" : "이미 등록된 이메일입니다."
 }
 ```
 </details>
@@ -553,12 +543,12 @@ HTTP METHOD : PATCH<br>
 ### 2. 예시
 Content-type : application/json
 
-## b. Param(파라미터 값이 필요한 경우)
+## b. URL(경로 변수)
 
 ### 1.설명
 | 키       | 데이터타입  | 설명 |
 |---------|--------|----|
-| userId  | int    | 유저 식별자 |
+| userId  | long    | 유저 식별자 |
 
 ```json
 localhost:8080/users/{userId}
@@ -585,7 +575,6 @@ localhost:8080/users/{userId}
 ### 3. 응답(Response)
 | 키           | 데이터타입  | 설명 |
 |-------------|--------|----|
-| status      | int    | 상태코드 |
 | id        | long   | 생성된 유저 식별자 |
 | userName| String | 사용자 이름   |
 | email| String | 사용자 이메일  |
@@ -594,12 +583,9 @@ localhost:8080/users/{userId}
 ### 응답 예시
 ```json
 {
-  "status" : 200,
-  "data" : {
     "id": 1,
     "userName": "이형준",
     "email" : "xkrhd5@naver.com"
-  }
 }
 ```
 ### b. 수정 실패 응답
@@ -613,7 +599,10 @@ localhost:8080/users/{userId}
 ```json
 {
    "status" : "404",
-   "message" : "해당 유저를 찾을 수 없습니다."
+   "message" : "해당 유저를 찾을 수 없습니다.",
+  //인가 실패
+   "status" : "403",
+   "message" : "접근 권한이 없습니다."
 }
 ```
 </details>
@@ -638,7 +627,7 @@ HTTP METHOD : PATCH<br>
 ### 2. 예시
 Content-type : application/json
 
-## b. Param(파라미터 값이 필요한 경우)
+## b. URL(경로 변수)
 
 ### 1.설명
 | 키       | 데이터타입  | 설명 |
@@ -687,7 +676,10 @@ localhost:8080/users/{userId}
 ```json
 {
    "status" : "404",
-   "message" : "해당 유저를 찾을 수 없습니다."
+   "message" : "비밀번호가 일치하지 않습니다.",
+  //인가 실패 
+   "status" : "403",
+   "message" : "접근 권한이 없습니다."
 }
 ```
 </details>
@@ -712,12 +704,12 @@ HTTP METHOD : GET<br>
 ### 2. 예시
 Content-type : application/json
 
-## b. Param(파라미터 값이 필요한 경우)
+## b. URL(경로 변수)
 
 ### 1.설명
 | 키       | 데이터타입  | 설명 |
 |---------|--------|----|
-| userId  | int    | 유저 식별자 |
+| userId  | long    | 유저 식별자 |
 
 ```json
 localhost:8080/users/{userId}
@@ -726,8 +718,6 @@ localhost:8080/users/{userId}
 ### 3. 응답(Response)
 | 키         | 데이터타입  | 설명         |
 |-----------|--------|------------|
-| data      | Object | 핵심데이터      |
-| status    | int    | 상태코드       |
 | id        | long   | 생성된 할일 식별자 |
 | userName  | String | 사용자이름      |
 | email     | String | 사용자 이메일    |
@@ -735,13 +725,9 @@ localhost:8080/users/{userId}
 ### 응답 예시
 ```json
 {
-   "status" : 200,
-   "data" : {
      "id": 1,
      "userName" : "이형준",
      "email" : "xkrhd3@naver.com"
-   }   
-
 }
 ```
 ### b. 조회 실패 응답
@@ -783,8 +769,6 @@ Content-type : application/json
 ### 3. 응답(Response)
 | 키         | 데이터타입  | 설명 |
 |-----------|--------|----|
-| data      | Object | 핵심데이터 |
-| status    | int    | 상태코드 |
 | id        | long   | 생성된 할일 식별자 |
 | userName  | String | 사용자이름 |
 | email     | String | 사용자 이메일 |
@@ -792,17 +776,16 @@ Content-type : application/json
 ### 응답 예시
 ```json
 
-   "status" : 200,
-   "data" : {
+{
    "id": 1,
    "userName" : "이형준",
-   "email" : "xkrhd3@naver.com",
-   },
-   {
+   "email" : "xkrhd3@naver.com"
+},
+{
    "id": 2,
    "userName" : "이형준2",
-   "email" : "xkrhd4@naver.com",
-   }
+   "email" : "xkrhd4@naver.com"
+}
 ```
 ### b. 조회 실패 응답
 
@@ -840,12 +823,12 @@ HTTP METHOD : DELETE<br>
 ### 2. 예시
 Content-type : application/json
 
-## b. Param(파라미터 값이 필요한 경우)
+## b. URL(경로 변수)
 
 ### 1.설명
 | 키      | 데이터타입  | 설명 |
 |--------|--------|----|
-| userId | int    | 유저 식별자 |
+| userId | bigint    | 유저 식별자 |
 
 ```json
 localhost:8080/schedule/{userId}
@@ -935,7 +918,7 @@ localhost:8080/users/login
 ### 실패 응답 예시
 ```json
 {
-   "status" : "404",
+   "status" : "400",
   //비밀번호&이메일 불일치
    "message" : "비밀번호나 이메일이 일치하지 않습니다."
 }
@@ -962,12 +945,12 @@ HTTP METHOD : GET<br>
 ### 2. 예시
 Content-type : application/json
 
-## b. Param(파라미터 값이 필요한 경우)
+## b.  URL(경로 변수)
 
 ### 1.설명
 | 키       | 데이터타입  | 설명 |
 |---------|--------|----|
-| userId  | int    | 유저 식별자 |
+| userId  | long    | 유저 식별자 |
 
 ```json
 localhost:8080/users/logout/{userId}
@@ -1023,10 +1006,6 @@ HTTP METHOD : POST<br>
 ### 2. 예시
 Content-type : application/json
 
-## b. Param(파라미터 값이 필요한 경우)
-
-### 1.설명
-
 ## c.body
 
 | 키               | 데이터타입 | 설명 |
@@ -1041,26 +1020,16 @@ Content-type : application/json
 ```
 
 ### 3. 응답(Response)
-| 키            | 데이터타입  | 설명         |
-|--------------|--------|------------|
-| data         | Object | 핵심데이터      |
-| status       | int    | 상태코드       |
-| commentid           | bigint | 일정고유 식별자   | 
-| userid       | bigint   | 생성된 유저 식별자 |
-| scheduleid           | bigint   | 생성된 일정 식별자 |
-| Comment |String| 생성 댓글      |
+| 키      | 데이터타입  | 설명        |
+|--------|--------|-----------|
+| id     | long | 댓글 고유 식별자 |
+| Comment |String| 생성 댓글     |
 
 ### 응답 예시
 ```json
 {
-   "status" : 200,
-   "data" : {
      "id" : 1,
-     "userid": 1,
-     "Postid" : 1,
      "Comment" : "스프링 어렵다...인생"
-   }   
-
 }
 ```
 ### b. 생성 실패 응답
@@ -1074,7 +1043,7 @@ Content-type : application/json
 ```json
 {
    "status" : "404",
-   "message" : "댓글이 없습니다."
+   "message" : "댓글을 찾을 수 없습니다."
 }
 ```
 </details>
@@ -1084,7 +1053,7 @@ Content-type : application/json
 <!-- summary 아래 한칸 공백 두어야함 -->
 
 ## 00.개요<br>
-URL : /comments/{commentid}<br>
+URL : /comments/{commentId}<br>
 HTTP METHOD : PUT<br>
 설명 : 댓글 정보를 수정하는 API입니다.<br>
 
@@ -1099,15 +1068,15 @@ HTTP METHOD : PUT<br>
 ### 2. 예시
 Content-type : application/json
 
-## b. Param(파라미터 값이 필요한 경우)
+## b. URL(경로 변수)
 
 ### 1.설명
-| 키 | 데이터타입  | 설명     |
-|---|--------|--------|
-| commentid  | int    | 댓글 식별자 |
+| 키 | 데이터타입  | 설명        |
+|---|--------|-----------|
+| commentId  | long   | 댓글 고유 식별자 |
 
 ```json
-localhost:8080/comments/{commentid}
+localhost:8080/comments/{commentId}
 ```
 
 ## c.body
@@ -1125,29 +1094,19 @@ localhost:8080/comments/{commentid}
 ```
 
 ### 3. 응답(Response)
-| 키            | 데이터타입  | 설명         |
-|--------------|--------|------------|
-| data         | Object | 핵심데이터      |
-| status       | int    | 상태코드       |
-| commentid           | bigint | 일정고유 식별자   | 
-| userid       | bigint   | 생성된 유저 식별자 |
-| scheduleid           | bigint   | 생성된 일정 식별자 |
-| comment |String| 생성 댓글      |
+| 키            | 데이터타입  | 설명        |
+|--------------|--------|-----------|
+| id           | long | 댓글 고유 식별자 |
+| comment |String| 생성 댓글     |
 
 ### 응답 예시
 ```json
 {
-  "status" : 200,
-  "data" : {
     "id" : 1,
-    "userid": 1,
-    "Postid" : 1,
     "comment" : "스프링 어렵다...인생2"
-   }   
-
 }
 ```
-### b. 생성 실패 응답
+### b. 수정 실패 응답
 
 | 키       | 데이터타입  | 설명  |
 |---------|--------|-----|
@@ -1158,7 +1117,7 @@ localhost:8080/comments/{commentid}
 ```json
 {
    "status" : "404",
-   "message" : "댓글이 없습니다."
+   "message" : "댓글을 찾을 수 없습니다."
 }
 ```
 </details>
@@ -1168,7 +1127,7 @@ localhost:8080/comments/{commentid}
 <!-- summary 아래 한칸 공백 두어야함 -->
 
 ## 00.개요<br>
-URL : /comments/{commentid}<br>
+URL : /comments/{commentId}<br>
 HTTP METHOD : GET<br>
 설명 : 단일 댓글 정보를 조회하는 API입니다.<br>
 
@@ -1183,41 +1142,31 @@ HTTP METHOD : GET<br>
 ### 2. 예시
 Content-type : application/json
 
-## b. Param(파라미터 값이 필요한 경우)
+## b. URL(경로 변수)
 
 ### 1.설명
-| 키       | 데이터타입  | 설명     |
-|---------|--------|--------|
-| commentid  | int    | 댓글 식별자 |
+| 키         | 데이터타입  | 설명     |
+|-----------|--------|--------|
+| commentId | long    | 댓글 식별자 |
 
 ```json
-localhost:8080/comments/{commentid}
+localhost:8080/comments/{commentId}
 ```
 
 ### 3. 응답(Response)
-| 키            | 데이터타입  | 설명         |
-|--------------|--------|------------|
-| data         | Object | 핵심데이터      |
-| status       | int    | 상태코드       |
-| commentid           | bigint | 일정고유 식별자   | 
-| userid       | bigint   | 생성된 유저 식별자 |
-| scheduleid           | bigint   | 생성된 일정 식별자 |
-| comment |String| 생성 댓글      |
+| 키            | 데이터타입  | 설명        |
+|--------------|--------|-----------|
+| id           | long | 댓글 고유 식별자 |
+| comment |String| 생성 댓글     |
 
 ### 응답 예시
 ```json
 {
-  "status" : 200,
-  "data" : {
     "id" : 1,
-    "userid": 1,
-    "Postid" : 1,
     "comment" : "스프링 어렵다...인생"
-   }   
-
 }
 ```
-### b. 생성 실패 응답
+### b. 조회 실패 응답
 
 | 키       | 데이터타입  | 설명  |
 |---------|--------|-----|
@@ -1228,7 +1177,7 @@ localhost:8080/comments/{commentid}
 ```json
 {
    "status" : "404",
-   "message" : "댓글이 없습니다."
+   "message" : "댓글을 찾을 수 없습니다."
 }
 ```
 </details>
@@ -1253,61 +1202,24 @@ HTTP METHOD : GET<br>
 ### 2. 예시
 Content-type : application/json
 
-## b. Param(파라미터 값이 필요한 경우)
-
-### 1.설명
-| 키 | 데이터타입 | 설명 |
-|---|-------|----|
-| - | -     | -  |
-
-```json
-
-```
-
-## c.body
-
-### 1.설명
-| 키 | 데이터타입 | 설명 |
-|---|-------|----|
-| - | -     | -  |
-| - | -     | -  |
-| - | -     | -  | 
-
-### 2. 요청예시
-```json
-{
-  
-}
-```
-
 ### 3. 응답(Response)
-| 키          | 데이터타입  | 설명         |
-|------------|--------|------------|
-| data       | Object | 핵심데이터      |
-| status     | int    | 상태코드       |
-| id         | bigint | 일정고유 식별자   | 
-| userId     | bigint   | 생성된 유저 식별자 |
-| scheduleId | bigint   | 생성된 일정 식별자 |
-| comment    |String| 생성 댓글      |
+| 키          | 데이터타입  | 설명        |
+|------------|--------|-----------|
+| id         | long | 댓글 고유 식별자 |
+| comment    |String| 생성 댓글     |
 
 ### 응답 예시
 ```json
-
-   "status" : 200,
-   "data" : {
+{
    "id" : 1,
-   "userid": 1,
-   "scheduleid" : 1,
    "comment" : "스프링 어렵다...인생"
-   },
-   {
+},
+{
    "id" : 2,
-   "userid": 2,
-   "scheduleid" : 2,
-   "comment" : "스프링 어렵다...인생"
-   }
+   "comment" : "스프링 어렵다...인생2"
+}
 ```
-### b. 생성 실패 응답
+### b. 조회 실패 응답
 
 | 키       | 데이터타입  | 설명  |
 |---------|--------|-----|
@@ -1318,7 +1230,7 @@ Content-type : application/json
 ```json
 {
    "status" : "404",
-   "message" : "댓글이 없습니다."
+   "message" : "댓글을 찾을 수 없습니다."
 }
 ```
 </details>
@@ -1343,46 +1255,18 @@ HTTP METHOD : DELETE<br>
 ### 2. 예시
 Content-type : application/json
 
-## b. Param(파라미터 값이 필요한 경우)
+## b. URL(경로 변수)
 
 ### 1.설명
 | 키       | 데이터타입  | 설명 |
 |---------|--------|----|
-| commentid  | int    | 유저 식별자 |
+| commentid  | long    | 유저 식별자 |
 
 ```json
 localhost:8080/comments/{commentid}
 ```
 
-## c.body
-
-### 1.설명
-| 키 | 데이터타입 | 설명 |
-|---|-------|----|
-| - | -     | -  |
-| - | -     | -  |
-| - | -     | -  | 
-
-### 2. 요청예시
-```json
-{
-  
-}
-```
-
-### 3. 응답(Response)
-| 키 | 데이터타입 | 설명 |
-|---|-------|----|
-| - | -     | -  |
-
-
-### 응답 예시
-```json
-{
-  
-}
-```
-### b. 생성 실패 응답
+### b. 삭제 실패 응답
 
 | 키       | 데이터타입  | 설명  |
 |---------|--------|-----|
@@ -1393,7 +1277,7 @@ localhost:8080/comments/{commentid}
 ```json
 {
    "status" : "404",
-   "message" : "댓글이 없습니다."
+   "message" : "댓글을 찾을 수 없습니다."
 }
 ```
 </details>
@@ -1421,10 +1305,6 @@ HTTP METHOD : POST<br>
 ### 2. 예시
 Content-type : application/json
 
-## b. Param(파라미터 값이 필요한 경우)
-
-### 1.설명
-
 ## c.body
 
 | 키               | 데이터타입 | 설명  |
@@ -1441,21 +1321,15 @@ Content-type : application/json
 ### 3. 응답(Response)
 | 키       | 데이터타입  | 설명         |
 |---------|--------|------------|
-| data    | Object | 핵심데이       |
-| status  | int    | 상태코드       |
-| id           | bigint | 좋아요 고유 식별자 | 
+| id           | Long | 좋아요 고유 식별자 | 
 | likeCount   | Long   | 좋아요        |
 
 
 ### 응답 예시
 ```json
 {
-   "status" : 200,
-   "data" : {
      "id" : 1,
      "likeCount" : 999999
-   }   
-
 }
 ```
 ### b. 생성 실패 응답
@@ -1469,7 +1343,7 @@ Content-type : application/json
 ```json
 {
    "status" : "404",
-   "message" : "좋아요가 없습니다."
+   "message" : "좋아요를 찾을 수 없습니다."
 }
 ```
 </details>
@@ -1485,6 +1359,7 @@ HTTP METHOD : DELETE<br>
 
 
 ## 01.요청(Request)
+
 ### 1.설명
 
 |key|value|
@@ -1494,47 +1369,18 @@ HTTP METHOD : DELETE<br>
 ### 2. 예시
 Content-type : application/json
 
-## b. Param(파라미터 값이 필요한 경우)
+## b. URL(경로 변수)
 
 ### 1.설명
 | 키       | 데이터타입  | 설명 |
 |---------|--------|----|
-| likeId  | int    | 유저 식별자 |
+| likeId  | Long    | 유저 식별자 |
 
 ### 2. 요청예시
 ```json
 localhost:8080/likes/{likeId}
 ```
-
-## c.body
-
-### 1.설명
-| 키 | 데이터타입 | 설명 |
-|---|-------|----|
-| - | -     | -  |
-| - | -     | -  |
-| - | -     | -  | 
-
-### 2. 요청예시
-```json
-{
-  
-}
-```
-
-### 3. 응답(Response)
-| 키 | 데이터타입 | 설명 |
-|---|-------|----|
-| - | -     | -  |
-
-
-### 응답 예시
-```json
-{
-  
-}
-```
-### b. 생성 실패 응답
+### b. 삭제 실패 응답
 
 | 키       | 데이터타입  | 설명  |
 |---------|--------|-----|
@@ -1545,7 +1391,7 @@ localhost:8080/likes/{likeId}
 ```json
 {
    "status" : "404",
-   "message" : "좋아요가 없습니다."
+   "message" : "좋아요를 찾을 수 없습니다."
 }
 ```
 </details>
@@ -1558,7 +1404,7 @@ localhost:8080/likes/{likeId}
 <!-- summary 아래 한칸 공백 두어야함 -->
 
 ## 00.개요<br>
-URL : /follow/{targetUserId}<br>
+URL : /follows/{targetUserId}<br>
 HTTP METHOD : POST<br>
 설명 : 팔로우를 생성하는 API 입니다.<br>
 
@@ -1573,51 +1419,30 @@ HTTP METHOD : POST<br>
 ### 2. 예시
 Content-type : application/json
 
-## b. Param(파라미터 값이 필요한 경우)
+## b. URL(경로 변수)
 
 ### 1.설명
-| 키            | 데이터 타입 | 설명           |
-|---------------|--------------|----------------|
-| targetUserId  | Long         | 팔로우할 유저의 ID |
-
-### 2. 요청예시
-### 2. 요청예시
-```json
-localhost:8080/follow/{targetUserId}
-```
-
-## c.body
-
-### 1. 설명
-| 키 | 데이터타입 | 설명 |
-|---|-------|---|
-| - | -     | - |
+| 키            | 데이터 타입 | 설명          |
+|---------------|--------------|-------------|
+| targetUserId  | Long         | 팔로우할 유저의 Id |
 
 ### 2. 요청예시
 ```json
-{
-   
-}
+localhost:8080/follows/{targetUserId}
 ```
 
 ### 3. 응답(Response)
 | 키      | 데이터타입  | 설명         |
 |--------|--------|------------|
-| data   | Object | 핵심데이       |
-| status | int    | 상태코드       |
-| id     | bigint | 팔로우 고유 식별자 | 
-| follow | Long   | 팔로우 상태 메시지 |
+| id     | Long | 팔로우 고유 식별자 | 
+| follow | String   | 팔로우 상태 메시지 |
 
 
 ### 응답 예시
 ```json
 {
-   "status" : 200,
-   "data" : {
      "id" : 1,
      "follow" : "팔로우 성공하였습니다."
-   }   
-
 }
 ```
 ### b. 생성 실패 응답
@@ -1631,7 +1456,7 @@ localhost:8080/follow/{targetUserId}
 ```json
 {
    "status" : "404",
-   "message" : "팔로우가 없습니다."
+   "message" : "팔로우를 할 수 없는 유저입니다."
 }
 ```
 </details>
@@ -1641,7 +1466,7 @@ localhost:8080/follow/{targetUserId}
 <!-- summary 아래 한칸 공백 두어야함 -->
 
 ## 00.개요<br>
-URL : /follow/following<br>
+URL : /follows/following<br>
 HTTP METHOD : GET<br>
 설명 : 유저가 팔로우한 사람들을 조회하는 API 입니다. <br>
 
@@ -1656,52 +1481,35 @@ HTTP METHOD : GET<br>
 ### 2. 예시
 Content-type : application/json
 
-## b. Param(파라미터 값이 필요한 경우)
+## b. URL (경로 변수)
 
 ### 1.설명
 | 키       | 데이터타입  | 설명      |
 |---------|--------|---------|
-| followId  | Bigint | 팔로우 식별자 |
+| following  | String | 팔로우한 사람 |
 
 ```json
 localhost:8080/follow/following
 ```
 
-## c.body
-
-### 1.설명
-| 키 | 데이터타입 | 설명 |
-|---|-------|----|
-| - | -     | -  |
-| - | -     | -  |
-| - | -     | -  | 
-
-### 2. 요청예시
-```json
-{
-  
-}
-```
-
 ### 3. 응답(Response)
-| 키 | 데이터타입 | 설명 |
-|---|-------|----|
-| - | -     | -  |
-
+| 키 | 데이터타입 | 설명         |
+|--|------|------------|
+| id | Long     | 팔로우 고유 식별자 |
+| username1 | String     | 팔로우한 유저    |
+| username2 | String     | 팔로우한 유저    |
+| username3 | String     | 팔로우한 유저    |
 
 ### 응답 예시
 ```json
 {
-  "status" : 200,
-  "data" : {
     "id" : 1,
     "username1" : "홍길동",
     "username2" : "이형준",
     "username3" : "아기공룡둘리"
-  }
 }
 ```
-### b. 생성 실패 응답
+### b. 조회 실패 응답
 
 | 키       | 데이터타입  | 설명  |
 |---------|--------|-----|
@@ -1722,7 +1530,7 @@ localhost:8080/follow/following
 <!-- summary 아래 한칸 공백 두어야함 -->
 
 ## 00.개요<br>
-URL : /follow/followers<br>
+URL : /follows/followers<br>
 HTTP METHOD : GET<br>
 설명 : 유저를 팔로우한 사람들을 조회하는 API 입니다. <br>
 
@@ -1737,37 +1545,24 @@ HTTP METHOD : GET<br>
 ### 2. 예시
 Content-type : application/json
 
-## b. Param(파라미터 값이 필요한 경우)
+## b. URL(경로 변수)
 
 ### 1.설명
 | 키       | 데이터타입  | 설명      |
 |---------|--------|---------|
-| followId  | Bigint | 팔로우 식별자 |
+| followers  | String | 팔로우한 유저 |
 
 ```json
-localhost:8080/follow/followers
-```
-
-## c.body
-
-### 1.설명
-| 키 | 데이터타입 | 설명 |
-|---|-------|----|
-| - | -     | -  |
-| - | -     | -  |
-| - | -     | -  | 
-
-### 2. 요청예시
-```json
-{
-  
-}
+localhost:8080/follows/followers
 ```
 
 ### 3. 응답(Response)
-| 키 | 데이터타입 | 설명 |
-|---|-------|----|
-| - | -     | -  |
+| 키 | 데이터타입 | 설명         |
+|--|------|------------|
+| id | Long     | 팔로우 고유 식별자 |
+| username1 | String     | 팔로우한 유저    |
+| username2 | String     | 팔로우한 유저    |
+| username3 | String     | 팔로우한 유저    |
 
 
 ### 응답 예시
@@ -1782,7 +1577,7 @@ localhost:8080/follow/followers
   }
 }
 ```
-### b. 생성 실패 응답
+### b. 조회 실패 응답
 
 | 키       | 데이터타입  | 설명  |
 |---------|--------|-----|
@@ -1803,7 +1598,7 @@ localhost:8080/follow/followers
 <!-- summary 아래 한칸 공백 두어야함 -->
 
 ## 00.개요<br>
-URL : /Follow/{followId}<br>
+URL : /follows/{followId}<br>
 HTTP METHOD : DELETE<br>
 설명 : 단일 댓글 정보를 삭제하는 API 입니다. <br>
 
@@ -1823,42 +1618,23 @@ Content-type : application/json
 ### 1.설명
 | 키       | 데이터타입  | 설명      |
 |---------|--------|---------|
-| followId  | Bigint | 팔로우 식별자 |
+| followId  | Long | 팔로우 식별자 |
 
 ```json
-localhost:8080/Follow/{followId}
-```
-
-## c.body
-
-### 1.설명
-| 키 | 데이터타입 | 설명 |
-|---|-------|----|
-| - | -     | -  |
-| - | -     | -  |
-| - | -     | -  | 
-
-### 2. 요청예시
-```json
-{
-  
-}
+localhost:8080/follows/{followId}
 ```
 
 ### 3. 응답(Response)
-| 키 | 데이터타입 | 설명 |
-|---|-------|----|
-| - | -     | -  |
-
+| 키 | 데이터타입 | 설명         |
+|--|------|------------|
+| id | Long     | 팔로우 고유 식별자 |
+| follow | String     | 팔로우 상태 메시지 |
 
 ### 응답 예시
 ```json
 {
-  "status" : 200,
-  "data" : {
     "id" : 1,
     "follow" : "팔로우 취소하였습니다."
-  }
 }
 ```
 ### b. 생성 실패 응답
@@ -1872,7 +1648,7 @@ localhost:8080/Follow/{followId}
 ```json
 {
    "status" : "404",
-   "message" : "팔로우가 없습니다."
+   "message" : "팔로우한 사람이 없습니다."
 }
 ```
 </details>
