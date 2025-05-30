@@ -31,7 +31,6 @@ public class LoginFilter implements Filter {
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
-
     private boolean isFilterPassUri(String requestURI){
         //Pattern에 일치하면 true 반환
         return PatternMatchUtils.simpleMatch(FILTER_PASS_URI, requestURI);
