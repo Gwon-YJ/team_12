@@ -3,6 +3,8 @@ package com.example.newsfeed.service;
 import com.example.newsfeed.dto.LoginRequestDto;
 import com.example.newsfeed.config.PasswordEncoder;
 import com.example.newsfeed.entity.User;
+import com.example.newsfeed.exception.CustomException;
+import com.example.newsfeed.exception.ErrorType;
 import com.example.newsfeed.userRepository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,13 +21,13 @@ public class LoginService {
     public User login(LoginRequestDto loginRequestDto) {
         Optional<User> optionalUser = Optional.ofNullable(userRepository.findByEmail(loginRequestDto.getEmail()));
         if(optionalUser.isEmpty()) {
-            throw new RuntimeException("비밀번호나 이메일이 일치하지 않습니다.");
+            throw new CustomException(ErrorType.PASSWORD_EMAIL_MISMATCH);
         }
         User user = optionalUser.get();
         String savePw = user.getPassword();
         String inputPw = loginRequestDto.getPassword();
         if(!passwordEncoder.matches(inputPw, savePw)) {
-            throw new RuntimeException("비밀번호나 이메일이 일치하지 않습니다.");
+            throw new CustomException(ErrorType.PASSWORD_EMAIL_MISMATCH);
         }
         return user;
     }
