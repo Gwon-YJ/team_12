@@ -5,9 +5,6 @@ import com.example.newsfeed.entity.Comment;
 import com.example.newsfeed.repository.CommentRepository;
 import com.example.newsfeed.post.entity.Post;
 import com.example.newsfeed.post.repository.PostRepository;
-import com.example.newsfeed.session.entity.Session;
-import com.example.newsfeed.session.repository.SessionRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,30 +14,25 @@ import java.util.stream.Collectors;
 @Service
 public class CommentService {
 
-    private final SessionRepository sessionRepository;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
 
-    public CommentService(SessionRepository sessionRepository, PostRepository postRepository, CommentRepository commentRepository) {
-        this.sessionRepository = sessionRepository;
+    public CommentService(PostRepository postRepository, CommentRepository commentRepository) {
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
     }
 
     // 댓글 생성
-    public void saveComment(Long sessionId, Long postId, String comment) {
-        Session session = sessionRepository.findById(sessionId)
-                .orElseThrow(() -> new EntityNotFoundException("세션이 없습니다."));
-
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new EntityNotFoundException("게시글이 없습니다."));
-
-        Comment commentEntity = new Comment();
-        commentEntity.setSession(session);
+    public CommentResponseDto saveComment(Long postId, String comment) {
+        Optional<Post> optionalPost = postRepository.findById(postId);
+        if(optionalPost.isEmpty()) {
+            throw new RuntimeException("게시글이 없습니다.");
+        }
+        Comment commentEntity = new Comment(comment);
         commentEntity.setPost(post);
-        commentEntity.setComment(comment);
+        CommentResponseDto commentResponseDto = new CommentResponseDto(commentEntity);
 
-        commentRepository.save(commentEntity);
+       return commentResponseDto;
     }
 
     // 댓글 조회
@@ -56,7 +48,6 @@ public class CommentService {
         if(optionalComment.isEmpty()) {
             throw new RuntimeException("값이 비어 있습니다.");
         }
-
         Comment updateComment = optionalComment.get();
         updateComment.setComment(comment);
 

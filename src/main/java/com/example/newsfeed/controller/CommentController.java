@@ -2,7 +2,7 @@ package com.example.newsfeed.controller;
 
 import com.example.newsfeed.dto.CommentRequestDto;
 import com.example.newsfeed.dto.CommentResponseDto;
-import com.example.newsfeed.entity.Comment;
+
 import com.example.newsfeed.service.CommentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

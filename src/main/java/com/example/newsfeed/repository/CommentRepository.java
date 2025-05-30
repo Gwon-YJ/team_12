@@ -8,15 +8,13 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
+    List<Comment> findAllByPostIdOrderByModifiedAtDesc(Long postId);
 
-    List<Comment> findByPostId(Long postId);
-    List<Comment> findBySessionId(Long sessionId);
 
     default Comment findByIdOrElseThrow(Long id) {
         return findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id = " + id));
     }
 
 
-    List<Comment> findAllByPostIdOrderByModifiedAtDesc(Long postId);
 }
 
