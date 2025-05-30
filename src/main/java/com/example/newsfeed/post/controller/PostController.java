@@ -4,13 +4,14 @@ import com.example.newsfeed.post.dto.*;
 import com.example.newsfeed.post.service.PostService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -24,7 +25,7 @@ public class PostController {
     @PostMapping
     public ResponseEntity<PostResponseDto> createPost(
             HttpServletRequest servletRequest,
-            @RequestBody PostRequestDto requestDto){
+            @Valid @RequestBody PostRequestDto requestDto){
 
         HttpSession session = servletRequest.getSession(false);
         Long userId = (Long) session.getAttribute("sessionKey");
@@ -37,7 +38,7 @@ public class PostController {
     public ResponseEntity<PostResponseDto> updatePost(
             @PathVariable Long postId,
             HttpServletRequest servletRequest,
-            @RequestBody PostRequestDto requestDto){
+            @Valid @RequestBody PostRequestDto requestDto){
 
         HttpSession session = servletRequest.getSession(false);
         Long userId = (Long) session.getAttribute("sessionKey");
@@ -54,15 +55,15 @@ public class PostController {
 
     // 게시글 페이징 조회(게시물을 생성일 기준 내림차순) 추후에 팔로우한 사람들만 보이게 수정 예정
     @GetMapping
-    public ResponseEntity<PostPageInfoResponseDto<PostPageResponseDto>> pagingPosts(
-            @ModelAttribute PostPageRequestDto requestDto){
+    public ResponseEntity<PostPageInfoResponseDto> pagingPosts(
+            @Valid @ModelAttribute PostPageRequestDto requestDto){
         return new ResponseEntity<>(postService.pagingPosts(requestDto.getPage(), requestDto.getSize()), HttpStatus.OK);
     }
 
     // 게시글 날짜 범위로 검색(수정일자 기준 내림차순)
     @GetMapping
     public ResponseEntity<List<PostResponseDto>> searchPostsByDateRange(
-            @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") Timestamp startDate, @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") Timestamp endDate){
+            @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") LocalDateTime startDate, @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") LocalDateTime endDate){
         return new ResponseEntity<>(postService.searchPostsByDateRange(startDate, endDate), HttpStatus.OK);
     }
 

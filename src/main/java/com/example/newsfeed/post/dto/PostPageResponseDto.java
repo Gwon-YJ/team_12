@@ -4,7 +4,7 @@ import com.example.newsfeed.post.entity.Post;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 public class PostPageResponseDto {
@@ -22,13 +22,13 @@ public class PostPageResponseDto {
     private final Long commentsCount;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private final Timestamp createdAt;
+    private final LocalDateTime createdAt;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private final Timestamp modifiedAt;
+    private final LocalDateTime modifiedAt;
 
 
-    public PostPageResponseDto(Long postId, String userName, String title, String content, Long likesCount, Long commentsCount, Timestamp createdAt, Timestamp modifiedAt) {
+    public PostPageResponseDto(Long postId, String userName, String title, String content, Long likesCount, Long commentsCount, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.postId = postId;
         this.userName = userName;
         this.title = title;
