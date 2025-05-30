@@ -38,18 +38,18 @@ Content-type : application/json
 ```
 
 ### 3. 응답(Response)
-| 키          | 데이터타입  | 설명          |
-|------------|--------|-------------|
-| data       | Object | 핵심데이터       |
-| status     | int    | 상태코드        |
-| postId     | long   | 생성된 게시글 식별자 |
-| userName   | String | 사용자이름       |
-| title      | String | 게시글 제목      |
-| content    | String | 게시글 내용      |
-| likesCount | int    | 좋아요 수       |
-| todoCount  | int    | 댓글 수        |
-| createdAt  | Timestamp  | 생성날짜        |
-| modifiedDate | Timestamp  | 수정날짜  |
+| 키             | 데이터타입  | 설명          |
+|---------------|--------|-------------|
+| data          | Object | 핵심데이터       |
+| status        | int    | 상태코드        |
+| postId        | long   | 생성된 게시글 식별자 |
+| userName      | String | 사용자이름       |
+| title         | String | 게시글 제목      |
+| content       | String | 게시글 내용      |
+| likesCount    | int    | 좋아요 수       |
+| commentsCount | int    | 댓글 수        |
+| createdAt     | LocalDateTime  | 생성날짜        |
+| modifiedAt    | LocalDateTime  | 수정날짜  |
 
 ### 응답 예시
 ```json
@@ -59,9 +59,9 @@ Content-type : application/json
      "title" : "오늘도 짜증난다.",
      "content" : "사랑합니다.",
      "likesCount" : 90,
-     "todoCount" : 20,
+     "commentsCount" : 20,
      "createdAt": "2025-05-28 11:06:54",
-     "modifiedDate" : "2025-05-28 11:06:54"
+     "modifiedAt" : "2025-05-28 11:06:54"
 }
 ```
 ### b. 생성 실패 응답
@@ -140,9 +140,9 @@ localhost:8080/posts/{postId}
 | title        | String | 게시글 제목 |
 | content      | String | 게시글 내용 |
 | likesCount   | int    | 좋아요 수 |
-| todoCount    | int    | 댓글 수  |
-| creationData | Timestamp  | 생성날짜  |
-| modifiedDate | Timestamp  | 수정날짜  |
+| commentsCount    | int    | 댓글 수  |
+| createdAt | LocalDateTime  | 생성날짜  |
+| modifiedAt | LocalDateTime  | 수정날짜  |
 
 ### 응답 예시
 ```json
@@ -152,12 +152,12 @@ localhost:8080/posts/{postId}
      "title": "오늘도 짜증난다2",
      "content": "사랑합니다2",
      "likesCount" : 90,
-     "todoCount" : 20,
+     "commentsCount" : 20,
      "createdAt": "2025-05-28 11:06:54",
      "modifiedAt": "2025-05-28 11:08:54"
 }
 ```
-### b. 생성 실패 응답
+### b. 수정 실패 응답
 
 | 키       | 데이터타입  | 설명  |
 |---------|--------|-----|
@@ -201,23 +201,23 @@ Content-type : application/json
 ### 1.설명
 | 키      | 데이터타입  | 설명     |
 |--------|--------|--------|
-| postId | int    | 게시글 식별자 |
+| userId | int    | 게시글 식별자 |
 
 ```json
 localhost:8080/posts/{userId}
 ```
 
 ### 3. 응답(Response)
-| 키          | 데이터타입  | 설명         |
-|------------|--------|------------|
-| userId     | long      | 생성한 유저 식별자 |
-| userName   | String | 사용자이름      |
-| title      | String | 게시글 제목     |
-| content    | String | 게시글 내용     |
-| likesCount | int    | 좋아요 수      |
-| todoCount  | int    | 댓글 수       |
-| createdAt  | Timestamp  | 생성날짜       |
-| modifiedAt | Timestamp  | 수정날짜       |
+| 키          | 데이터타입  | 설명          |
+|------------|--------|-------------|
+| postId     | long      | 생성한 게시글 식별자 |
+| userName   | String | 사용자이름       |
+| title      | String | 게시글 제목      |
+| content    | String | 게시글 내용      |
+| likesCount | int    | 좋아요 수       |
+| commentsCount   | int    | 댓글 수        |
+| createdAt  | LocalDateTime  | 생성날짜        |
+| modifiedAt | LocalDateTime  | 수정날짜        |
 
 ### 응답 예시
 ```json
@@ -227,12 +227,12 @@ localhost:8080/posts/{userId}
      "title": "오늘도 짜증난다2",
      "content": "사랑합니다2",
      "likesCount" : 90,
-     "todoCount" : 20,
+     "commentsCount " : 20,
      "createdAt": "2025-05-28 11:06:54",
      "modifiedAt": "2025-05-28 11:08:54"
 }
 ```
-### b. 생성 실패 응답
+### b. 조회 실패 응답
 
 | 키       | 데이터타입  | 설명  |
 |---------|--------|-----|
@@ -291,8 +291,8 @@ localhost:8080/posts?page=1&size=10
 | content       | String    | 게시글 내용       |
 | likesCount    | int       | 좋아요 수        |
 | commentsCount  | int       | 댓글 수         |
-| createdAt     | Timestamp | 생성날짜         |
-| modifiedAt    | Timestamp | 수정날짜         |
+| createdAt     | LocalDateTime | 생성날짜         |
+| modifiedAt    | LocalDateTime | 수정날짜         |
 | page          | int       | 현재 페이지 수     |
 | size          | int       | 페이지 사이즈      |
 | totalElements | int       | 모든 페이지 게시글 수 |
@@ -300,8 +300,6 @@ localhost:8080/posts?page=1&size=10
 
 ### 응답 예시
 ```json
-
-   "status" : 200,
    " contents" : [ {
      "postId": 1,
      "userName": "이형준",
@@ -372,8 +370,8 @@ localhost:8080/posts?startDate=20250528&endDate=20250530
 | content    | String    | 게시글 내용      |
 | likesCount | int       | 좋아요 수       |
 | commentsCount  | int       | 댓글 수        |
-| createdAt  | Timestamp  | 생성날짜        |
-| modifiedAt | Timestamp  | 수정날짜        |
+| createdAt  | LocalDateTime  | 생성날짜        |
+| modifiedAt | LocalDateTime  | 수정날짜        |
 
 ### 응답 예시
 ```json
@@ -427,7 +425,7 @@ Content-type : application/json
 ### 1.설명
 | 키      | 데이터타입  | 설명      |
 |--------|--------|---------|
-| PostId | int    | 게시글 식별자 |
+| postId | int    | 게시글 식별자 |
 
 ```json
 localhost:8080/posts/{postId}
@@ -502,6 +500,8 @@ Content-type : application/json
 | id        | long   | 생성된 유저 식별자 |
 | userName  | String | 사용자이름      |
 | email     | String | 사용자 이메일   |
+| createdAt  | Timestamp  | 생성날짜        |
+| modifiedAt | Timestamp  | 수정날짜        |
 
 ### 응답 예시
 ```json
@@ -510,7 +510,9 @@ Content-type : application/json
    "data" : {
      "id": 1,
      "userName": "이형준",
-     "email" : "xkrhd3@naver.com"
+     "email" : "xkrhd3@naver.com",
+     "createdAt" : "2025-05-30 16:00:47",
+     "modifiedAt" : "2025-05-30 16:00:47"
    }   
 
 }
@@ -526,19 +528,19 @@ Content-type : application/json
 ```json
 {
    "status" : "404",
-   "message" : "유저가 없습니다."
+   "message" : "해당 유저를 찾을 수 없습니다."
 }
 ```
 </details>
 <details>
-<summary>단일 유저 정보수정</summary>
+<summary>특정 유저 정보수정</summary>
 
 <!-- summary 아래 한칸 공백 두어야함 -->
 
 ## 00.개요<br>
-URL : /users/{userid}<br>
+URL : /users/{userId}<br>
 HTTP METHOD : PATCH<br>
-설명 : 단일 유저 특정 정보를 수정하는 API입니다.<br>
+설명 : 특정 유저 정보를 수정하는 API입니다.<br>
 
 
 ## 01.요청(Request)
@@ -556,10 +558,10 @@ Content-type : application/json
 ### 1.설명
 | 키       | 데이터타입  | 설명 |
 |---------|--------|----|
-| userid  | int    | 유저 식별자 |
+| userId  | int    | 유저 식별자 |
 
 ```json
-localhost:8080/schedule/{userid}
+localhost:8080/users/{userId}
 ```
 
 ## c.body
@@ -575,7 +577,7 @@ localhost:8080/schedule/{userid}
 ```json
 {
   "userName": "이형준",
-  "email" : "xkrhd4@naver.com",
+  "email" : "xkrhd5@naver.com",
   "Password" : 12345
 }
 ```
@@ -596,11 +598,11 @@ localhost:8080/schedule/{userid}
   "data" : {
     "id": 1,
     "userName": "이형준",
-    "email" : "xkrhd4@naver.com"
+    "email" : "xkrhd5@naver.com"
   }
 }
 ```
-### b. 생성 실패 응답
+### b. 수정 실패 응답
 
 | 키       | 데이터타입  | 설명  |
 |---------|--------|-----|
@@ -611,7 +613,81 @@ localhost:8080/schedule/{userid}
 ```json
 {
    "status" : "404",
-   "message" : "유저가 없습니다."
+   "message" : "해당 유저를 찾을 수 없습니다."
+}
+```
+</details>
+<details>
+<summary>특정 유저 비밀번호수정</summary>
+
+<!-- summary 아래 한칸 공백 두어야함 -->
+
+## 00.개요<br>
+URL : /users/{userId}<br>
+HTTP METHOD : PATCH<br>
+설명 : 특정 유저 비밀번호를 수정하는 API입니다.<br>
+
+
+## 01.요청(Request)
+### 1.설명
+
+|key|value|
+|---|-----|
+|Content-type|application/json
+
+### 2. 예시
+Content-type : application/json
+
+## b. Param(파라미터 값이 필요한 경우)
+
+### 1.설명
+| 키       | 데이터타입  | 설명 |
+|---------|--------|----|
+| userId  | int    | 유저 식별자 |
+
+```json
+localhost:8080/users/{userId}
+```
+
+## c.body
+
+### 1.설명
+| 키        | 데이터타입 | 설명         |
+|----------|-------|------------|
+| savePassword| String | 사용자 기존비밀번호 |
+| changePassword| String | 사용자 수정비밀번호 |
+
+### 2. 요청예시
+```json
+{
+  "savePassword": 1234,
+  "changePassword" : 12345
+}
+```
+
+### 3. 응답(Response)
+| 키         | 데이터타입  | 설명          |
+|-----------|--------|-------------|
+| message  | String | 비밀번호 수정 메시지 |
+
+### 응답 예시
+```json
+{
+  "수정 성공"
+}
+```
+### b. 수정 실패 응답
+
+| 키       | 데이터타입  | 설명  |
+|---------|--------|-----|
+| status  | int    | 상태코드 |
+| message | String | 에러관련 메시지 |
+
+### 실패 응답 예시
+```json
+{
+   "status" : "404",
+   "message" : "해당 유저를 찾을 수 없습니다."
 }
 ```
 </details>
@@ -621,7 +697,7 @@ localhost:8080/schedule/{userid}
 <!-- summary 아래 한칸 공백 두어야함 -->
 
 ## 00.개요<br>
-URL : /users/{userid}<br>
+URL : /users/{userId}<br>
 HTTP METHOD : GET<br>
 설명 : 단일 유저 정보를 조회하는 API입니다.<br>
 
@@ -641,26 +717,10 @@ Content-type : application/json
 ### 1.설명
 | 키       | 데이터타입  | 설명 |
 |---------|--------|----|
-| userid  | int    | 유저 식별자 |
+| userId  | int    | 유저 식별자 |
 
 ```json
-localhost:8080/schedule/{userid}
-```
-
-## c.body
-
-### 1.설명
-| 키 | 데이터타입 | 설명 |
-|---|-------|----|
-| - | -     | -  |
-| - | -     | -  |
-| - | -     | -  | 
-
-### 2. 요청예시
-```json
-{
-  
-}
+localhost:8080/users/{userId}
 ```
 
 ### 3. 응답(Response)
@@ -684,7 +744,7 @@ localhost:8080/schedule/{userid}
 
 }
 ```
-### b. 생성 실패 응답
+### b. 조회 실패 응답
 
 | 키       | 데이터타입  | 설명  |
 |---------|--------|-----|
@@ -695,7 +755,7 @@ localhost:8080/schedule/{userid}
 ```json
 {
    "status" : "404",
-   "message" : "유저가 없습니다."
+   "message" : "해당 유저를 찾을 수 없습니다."
 }
 ```
 </details>
@@ -719,33 +779,6 @@ HTTP METHOD : GET<br>
 
 ### 2. 예시
 Content-type : application/json
-
-## b. Param(파라미터 값이 필요한 경우)
-
-### 1.설명
-| 키 | 데이터타입 | 설명 |
-|---|-------|----|
-| - | -     | -  |
-
-```json
-
-```
-
-## c.body
-
-### 1.설명
-| 키 | 데이터타입 | 설명 |
-|---|-------|----|
-| - | -     | -  |
-| - | -     | -  |
-| - | -     | -  | 
-
-### 2. 요청예시
-```json
-{
-  
-}
-```
 
 ### 3. 응답(Response)
 | 키         | 데이터타입  | 설명 |
@@ -771,7 +804,7 @@ Content-type : application/json
    "email" : "xkrhd4@naver.com",
    }
 ```
-### b. 생성 실패 응답
+### b. 조회 실패 응답
 
 | 키       | 데이터타입  | 설명  |
 |---------|--------|-----|
@@ -782,7 +815,7 @@ Content-type : application/json
 ```json
 {
    "status" : "404",
-   "message" : "유저가 없습니다."
+   "message" : "유저를 찾을 수 없습니다."
 }
 ```
 </details>
@@ -792,7 +825,7 @@ Content-type : application/json
 <!-- summary 아래 한칸 공백 두어야함 -->
 
 ## 00.개요<br>
-URL : /users/{userid}<br>
+URL : /users/{userId}<br>
 HTTP METHOD : DELETE<br>
 설명 : 단일 유저 정보를 삭제하는 API 입니다. <br>
 
@@ -810,43 +843,15 @@ Content-type : application/json
 ## b. Param(파라미터 값이 필요한 경우)
 
 ### 1.설명
-| 키       | 데이터타입  | 설명 |
-|---------|--------|----|
-| userid  | int    | 유저 식별자 |
+| 키      | 데이터타입  | 설명 |
+|--------|--------|----|
+| userId | int    | 유저 식별자 |
 
 ```json
-localhost:8080/schedule/{userid}
+localhost:8080/schedule/{userId}
 ```
 
-## c.body
-
-### 1.설명
-| 키 | 데이터타입 | 설명 |
-|---|-------|----|
-| - | -     | -  |
-| - | -     | -  |
-| - | -     | -  | 
-
-### 2. 요청예시
-```json
-{
-  
-}
-```
-
-### 3. 응답(Response)
-| 키 | 데이터타입 | 설명 |
-|---|-------|----|
-| - | -     | -  |
-
-
-### 응답 예시
-```json
-{
-  
-}
-```
-### b. 생성 실패 응답
+### b. 삭제 실패 응답
 
 | 키       | 데이터타입  | 설명  |
 |---------|--------|-----|
@@ -857,7 +862,7 @@ localhost:8080/schedule/{userid}
 ```json
 {
    "status" : "404",
-   "message" : "유저가 없습니다."
+   "message" : "유저를 찾을 수 없습니다."
 }
 ```
 </details>
@@ -867,7 +872,7 @@ localhost:8080/schedule/{userid}
 <!-- summary 아래 한칸 공백 두어야함 -->
 
 ## 00.개요<br>
-URL : /users/login/{userid}<br>
+URL : /users/login<br>
 HTTP METHOD : GET<br>
 설명 : 유저 정보로 로그인하는 API입니다.<br>
 
@@ -882,53 +887,45 @@ HTTP METHOD : GET<br>
 ### 2. 예시
 Content-type : application/json
 
-## b. Param(파라미터 값이 필요한 경우)
+## b. URL(경로 변수)
 
 ### 1.설명
-| 키       | 데이터타입  | 설명 |
-|---------|--------|----|
-| userid  | int    | 유저 식별자 |
+| 키       | 데이터타입 | 설명  |
+|---------|-----|-----|
+| login  | String   | 로그인 |
 
 ```json
-localhost:8080/users/login/{userid}
+localhost:8080/users/login
 ```
 
 ## c.body
 
 ### 1.설명
-| 키 | 데이터타입 | 설명 |
-|---|-------|----|
-| - | -     | -  |
-| - | -     | -  |
-| - | -     | -  | 
+| 키   | 데이터타입 | 설명      |
+|-----|-----|---------|
+| email |  String   | 유저 이메일  |
+| Password    | String    | 유저 비밀번호 | 
 
 ### 2. 요청예시
 ```json
 {
   "username" : "이형준",
-  "email" : "xkrhd3@naver.com"
+  "Password" : 1234
 }
 ```
 
 ### 3. 응답(Response)
 | 키         | 데이터타입  | 설명         |
 |-----------|--------|------------|
-| data      | Object | 핵심데이터      |
-| status    | int    | 상태코드       |
-| id        | long   | 생성된 할일 식별자 |
-| logout  | String | 로그인 메시지    |
+| message  | String | 로그인 메시지    |
 
 ### 응답 예시
 ```json
 {
-   "status" : 200,
-   "data" : {
-     "logIn" : "로그인 성공"
-   }   
-
+     "로그인에 성공했습니다."
 }
 ```
-### b. 생성 실패 응답
+### b. 로그인 실패 응답
 
 | 키       | 데이터타입  | 설명  |
 |---------|--------|-----|
@@ -939,7 +936,8 @@ localhost:8080/users/login/{userid}
 ```json
 {
    "status" : "404",
-   "message" : "유저가 없습니다."
+  //비밀번호&이메일 불일치
+   "message" : "비밀번호나 이메일이 일치하지 않습니다."
 }
 ```
 </details>
@@ -949,7 +947,7 @@ localhost:8080/users/login/{userid}
 <!-- summary 아래 한칸 공백 두어야함 -->
 
 ## 00.개요<br>
-URL : /users/logout/{userid}<br>
+URL : /users/logout/{userId}<br>
 HTTP METHOD : GET<br>
 설명 : 유저 정보로 로그아웃하는 API입니다.<br>
 
@@ -969,47 +967,24 @@ Content-type : application/json
 ### 1.설명
 | 키       | 데이터타입  | 설명 |
 |---------|--------|----|
-| userid  | int    | 유저 식별자 |
+| userId  | int    | 유저 식별자 |
 
 ```json
-localhost:8080/users/logout/{userid}
-```
-
-## c.body
-
-### 1.설명
-| 키 | 데이터타입 | 설명 |
-|---|-------|----|
-| - | -     | -  |
-| - | -     | -  |
-| - | -     | -  | 
-
-### 2. 요청예시
-```json
-{
-  
-}
+localhost:8080/users/logout/{userId}
 ```
 
 ### 3. 응답(Response)
-| 키         | 데이터타입  | 설명         |
-|-----------|--------|------------|
-| data      | Object | 핵심데이터      |
-| status    | int    | 상태코드       |
-| id        | long   | 생성된 할일 식별자 |
-| logout  | String | 로그아웃 메시지   |
+| 키         | 데이터타입  | 설명       |
+|-----------|--------|----------|
+| message  | String | 로그아웃 메시지 |
 
 ### 응답 예시
 ```json
 {
-   "status" : 200,
-   "data" : {
-     "logout" : "로그아웃 되었습니다."
-   }   
-
+  "로그아웃에 성공했습니다."
 }
 ```
-### b. 생성 실패 응답
+### b. 로그아웃 실패 응답
 
 | 키       | 데이터타입  | 설명  |
 |---------|--------|-----|
@@ -1020,7 +995,7 @@ localhost:8080/users/logout/{userid}
 ```json
 {
    "status" : "404",
-   "message" : "유저가 없습니다."
+   "message" : "유저를 찾을 수 없습니다."
 }
 ```
 </details>
@@ -1217,22 +1192,6 @@ Content-type : application/json
 
 ```json
 localhost:8080/comments/{commentid}
-```
-
-## c.body
-
-### 1.설명
-| 키 | 데이터타입 | 설명 |
-|---|-------|----|
-| - | -     | -  |
-| - | -     | -  |
-| - | -     | -  | 
-
-### 2. 요청예시
-```json
-{
-  
-}
 ```
 
 ### 3. 응답(Response)
