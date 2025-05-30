@@ -48,16 +48,24 @@ public class CommentService {
         if(optionalComment.isEmpty()) {
             throw new RuntimeException("값이 비어 있습니다.");
         }
+
         Comment updateComment = optionalComment.get();
+
         updateComment.setComment(comment);
 
         return commentRepository.save(updateComment);
     }
 
     // 댓글 삭제
-    public void deleteComment(Long commentId) {
-        commentRepository.deleteById(commentId);
+        public void deleteComment (Long commentId){
+            Optional<Comment> optionalComment = commentRepository.findById(commentId);
+            if (optionalComment.isEmpty()) {
+                throw new RuntimeException("해당 댓글이 존재하지 않습니다.");
+            }
+
+            Comment deleteComment = optionalComment.get();
+
+            commentRepository.delete(deleteComment);
+        }
+
     }
-
-}
-
