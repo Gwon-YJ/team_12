@@ -1,11 +1,11 @@
 package com.example.newsfeed.service;
 
 import com.example.newsfeed.dto.LoginRequestDto;
+import com.example.newsfeed.entity.User;
 import com.example.newsfeed.repository.UserRepository;
 import com.example.newsfeed.utils.JwtUtil;
 import com.example.newsfeed.utils.PasswordEncoder;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,11 +13,10 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final JwtUtil jwtUtil;
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder; // Spring Security의 PasswordEncoder 사용
     private final UserRepository userRepository;
 
     public String login(LoginRequestDto request) {
-
         String userName = request.userName();
         String password = request.password();
 
@@ -32,7 +31,7 @@ public class UserService {
         return jwtUtil.generateToken(user.getUsername(), user.getRole());
     }
 
-    // InitDat 저장용 으로 만든 메서드임
+    // InitData 저장용 메서드
     public User save(User user) {
         return userRepository.save(user);
     }
