@@ -27,8 +27,8 @@ public class InitData {
                 List.of(new User("권용준", passwordEncoder.encode("1234"), "yoyo99828@naver.com", UserRoleEnum.ADMIN),
                         new User("박소희", passwordEncoder.encode("1234"), "user2@sparta.com", UserRoleEnum.ADMIN),
                         new User("이형준", passwordEncoder.encode("1234"), "user3@sparta.com", UserRoleEnum.ADMIN),
-                        new User("임서연", passwordEncoder.encode("1234"), "user3@sparta.com", UserRoleEnum.ADMIN),
-                        new User("강산", passwordEncoder.encode("1234"), "user3@sparta.com", UserRoleEnum.ADMIN));
+                        new User("임서연", passwordEncoder.encode("1234"), "user4@sparta.com", UserRoleEnum.ADMIN),
+                        new User("강산", passwordEncoder.encode("1234"), "user5@sparta.com", UserRoleEnum.ADMIN));
         for (User product : productList) {
             userService.save(product);
         }
