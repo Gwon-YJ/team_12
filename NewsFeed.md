@@ -42,7 +42,7 @@ Content-type : application/json
 |------------|--------|-------------|
 | data       | Object | 핵심데이터       |
 | status     | int    | 상태코드        |
-| userid     | long   | 생성된 게시글 식별자 |
+| postId     | long   | 생성된 게시글 식별자 |
 | userName   | String | 사용자이름       |
 | title      | String | 게시글 제목      |
 | content    | String | 게시글 내용      |
@@ -54,7 +54,7 @@ Content-type : application/json
 ### 응답 예시
 ```json
 {
-     "userid": 1,
+     "postId ": 1,
      "userName" : "이형준",
      "title" : "오늘도 짜증난다.",
      "content" : "사랑합니다.",
@@ -88,7 +88,7 @@ Content-type : application/json
 <!-- summary 아래 한칸 공백 두어야함 -->
 
 ## 00.개요<br>
-URL : /posts/{postid}<br>
+URL : /posts/{postId}<br>
 HTTP METHOD : PUT<br>
 설명 : 게시글 정보를 수정하는 API입니다.<br>
 
@@ -106,12 +106,12 @@ Content-type : application/json
 ## b. URL(경로 변수)
 
 ### 1.설명
-| 키       | 데이터타입  | 설명      |
-|---------|--------|---------|
-| Postid  | int    | 게시글 식별자 |
+| 키      | 데이터타입  | 설명      |
+|--------|--------|---------|
+| PostId | int    | 게시글 식별자 |
 
 ```json
-localhost:8080/posts/{postid}
+localhost:8080/posts/{postId}
 ```
 
 ## c.body
@@ -119,7 +119,6 @@ localhost:8080/posts/{postid}
 ### 1.설명
 | 키        | 데이터타입 | 설명     |
 |----------|-------|--------|
-| userName | String | 사용자이름  |
 | title    | String | 게시글 제목 |
 | content  | String | 게시글 내용 | 
 
@@ -136,7 +135,7 @@ localhost:8080/posts/{postid}
 |--------------|--------|-------|
 | data         | Object | 핵심데이터 |
 | status       | int    | 상태코드  |
-| userid     | long   | 생성된 게시글 식별자 |
+| postId     | long   | 생성된 게시글 식별자 |
 | userName     | String | 사용자이름 |
 | title        | String | 게시글 제목 |
 | content      | String | 게시글 내용 |
@@ -148,7 +147,7 @@ localhost:8080/posts/{postid}
 ### 응답 예시
 ```json
 {
-     "userid" : 1,
+     "postId" : 1,
      "userName": "이형준",
      "title": "오늘도 짜증난다2",
      "content": "사랑합니다2",
@@ -182,7 +181,7 @@ localhost:8080/posts/{postid}
 <!-- summary 아래 한칸 공백 두어야함 -->
 
 ## 00.개요<br>
-URL : /posts/{userid}<br>
+URL : /posts/{userId}<br>
 HTTP METHOD : GET<br>
 설명 : 특정 유저 게시글 정보를 조회하는 API입니다.<br>
 
@@ -200,32 +199,30 @@ Content-type : application/json
 ## b. URl(경로 변수)
 
 ### 1.설명
-| 키       | 데이터타입  | 설명     |
-|---------|--------|--------|
-| postid  | int    | 게시글 식별자 |
+| 키      | 데이터타입  | 설명     |
+|--------|--------|--------|
+| postId | int    | 게시글 식별자 |
 
 ```json
-localhost:8080/posts/{postid}
+localhost:8080/posts/{userId}
 ```
 
 ### 3. 응답(Response)
-| 키          | 데이터타입  | 설명     |
-|------------|--------|--------|
-| data       | Object | 핵심데이터  |
-| status     | int    | 상태코드   |
-| userid     | long      | 생성된 게시글 식별자  |
-| userName   | String | 사용자이름  |
-| title      | String | 게시글 제목 |
-| content    | String | 게시글 내용 |
-| likesCount | int    | 좋아요 수  |
-| todoCount  | int    | 댓글 수   |
-| createdAt  | Timestamp  | 생성날짜        |
-| modifiedAt | Timestamp  | 수정날짜        |
+| 키          | 데이터타입  | 설명         |
+|------------|--------|------------|
+| userId     | long      | 생성한 유저 식별자 |
+| userName   | String | 사용자이름      |
+| title      | String | 게시글 제목     |
+| content    | String | 게시글 내용     |
+| likesCount | int    | 좋아요 수      |
+| todoCount  | int    | 댓글 수       |
+| createdAt  | Timestamp  | 생성날짜       |
+| modifiedAt | Timestamp  | 수정날짜       |
 
 ### 응답 예시
 ```json
 {
-     "userid" : 1,
+     "userId" : 1,
      "userName": "이형준",
      "title": "오늘도 짜증난다2",
      "content": "사랑합니다2",
@@ -256,7 +253,7 @@ localhost:8080/posts/{postid}
 <!-- summary 아래 한칸 공백 두어야함 -->
 
 ## 00.개요<br>
-URL : /posts/page<br>
+URL : /posts?page=1&size=10<br>
 HTTP METHOD : GET<br>
 설명 : 게시글 정보를 조회하는 API입니다.<br>
 
@@ -271,6 +268,18 @@ HTTP METHOD : GET<br>
 ### 2. 예시
 Content-type : application/json
 
+## b. URl(경로 변수)
+
+### 1.설명
+| 키      | 데이터타입  | 설명      |
+|--------|--------|---------|
+| page | int    | 페이지 수   |
+| size | int    | 페이지 사이즈 |
+
+```json
+localhost:8080/posts?page=1&size=10
+```
+
 ### 3. 응답(Response)
 | 키             | 데이터타입     | 설명           |
 |---------------|-----------|--------------|
@@ -281,7 +290,7 @@ Content-type : application/json
 | title         | String    | 게시글 제목       |
 | content       | String    | 게시글 내용       |
 | likesCount    | int       | 좋아요 수        |
-| todoCount     | int       | 댓글 수         |
+| commentsCount  | int       | 댓글 수         |
 | createdAt     | Timestamp | 생성날짜         |
 | modifiedAt    | Timestamp | 수정날짜         |
 | page          | int       | 현재 페이지 수     |
@@ -299,7 +308,7 @@ Content-type : application/json
      "title": "오늘도 짜증난다",
      "content": "사랑합니다",
      "likesCount" : 90,
-     "todoCount" : 20,
+     "commentsCount" : 20,
      "createdAt": "2025-05-28 11:06:54",
      "modifiedAt": "2025-05-28 11:08:54"
    },
@@ -309,13 +318,15 @@ Content-type : application/json
      "title": "오늘도 짜증난다2",
      "content": "사랑합니다2",
      "likesCount" : 70,
-     "todoCount" : 20,
+     "commentsCount" : 20,
      "createdAt": "2025-05-28 11:06:54",
      "modifiedAt": "2025-05-28 11:08:54",
    }
 ],
    "page" : 1,
    "size" : 10,
+   "totalElements" : 2,
+   "totalPages" : 1
    }
 ```
 </details>
@@ -340,15 +351,27 @@ HTTP METHOD : GET<br>
 ### 2. 예시
 Content-type : application/json
 
+## b. URl(경로 변수)
+
+### 1.설명
+| 키      | 데이터타입  | 설명          |
+|--------|--------|-------------|
+| startDate | int    | 검색 범위 시작날짜  |
+| endDate | int    | 검색 범위 마지막날짜 |
+
+```json
+localhost:8080/posts?startDate=20250528&endDate=20250530
+```
+
 ### 3. 응답(Response)
 | 키          | 데이터타입     | 설명          |
 |------------|-----------|-------------|
-| userid         | long      | 생성된 게시글 식별자 |
+| postId     | long      | 생성된 게시글 식별자 |
 | userName   | String    | 사용자이름       |
 | title      | String    | 게시글 제목      |
 | content    | String    | 게시글 내용      |
 | likesCount | int       | 좋아요 수       |
-| todoCount  | int       | 댓글 수        |
+| commentsCount  | int       | 댓글 수        |
 | createdAt  | Timestamp  | 생성날짜        |
 | modifiedAt | Timestamp  | 수정날짜        |
 
@@ -357,22 +380,22 @@ Content-type : application/json
 
    "status" : 200,
    {
-     "userid": 1,
+     "postId": 1,
      "userName": "이형준",
      "title": "오늘도 짜증난다",
      "content": "사랑합니다",
      "likesCount" : 90,
-     "todoCount" : 20,
+     "commentsCount" : 20,
      "createdAt": "2025-05-28 11:06:54",
      "modifiedAt ": "2025-05-30 11:10:55"
    },
    {
-     "userid": 2,
+     "postId": 2,
      "userName": "이형준",
      "title": "오늘도 짜증난다2",
      "content": "사랑합니다2",
      "likesCount" : 70,
-     "todoCount" : 20,
+     "commentsCount" : 20,
      "createdAt": "2025-05-30 11:06:54",
      "modifiedAt ": "2025-05-30 11:10:55"
    }
@@ -384,7 +407,7 @@ Content-type : application/json
 <!-- summary 아래 한칸 공백 두어야함 -->
 
 ## 00.개요<br>
-URL : /posts/{postid}<br>
+URL : /posts/{postId}<br>
 HTTP METHOD : DELETE<br>
 설명 : 단일 게시글 정보를 삭제하는 API 입니다. <br>
 
@@ -402,12 +425,12 @@ Content-type : application/json
 ## b. URL(경로 변수)
 
 ### 1.설명
-| 키       | 데이터타입  | 설명      |
-|---------|--------|---------|
-| Postid  | int    | 게시글 식별자 |
+| 키      | 데이터타입  | 설명      |
+|--------|--------|---------|
+| PostId | int    | 게시글 식별자 |
 
 ```json
-localhost:8080/posts/{postid}
+localhost:8080/posts/{postId}
 ```
 ### b. 생성 실패 응답
 
