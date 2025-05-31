@@ -44,8 +44,7 @@ public class UserService {
         return userResponseDto;
     }
 
-    public UserResponseDto updateUser(Long userId, Long sessionId, UserRequestDto.UpdateUser userRequestDto) {
-        isAccessAvailable(userId, sessionId);
+    public UserResponseDto updateUser(Long userId, UserRequestDto.UpdateUser userRequestDto) {
         User user = isUserEmpty(userId);
         if(!passwordEncoder.matches(userRequestDto.getPassword(), user.getPassword()))
             throw new CustomException(ErrorType.PASSWORD_MISMATCH);
@@ -59,8 +58,7 @@ public class UserService {
         return userResponseDto;
     }
 
-    public void updateUserPw(Long userId, Long sessionId, UserRequestDto.UpdatePw userRequestDto) {
-        isAccessAvailable(userId, sessionId);
+    public void updateUserPw(Long userId, UserRequestDto.UpdatePw userRequestDto) {
         User user = isUserEmpty(userId);
         if(!passwordEncoder.matches(userRequestDto.getSavePassword(), user.getPassword()))
             throw new CustomException(ErrorType.PASSWORD_MISMATCH);
@@ -68,8 +66,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void deleteUser(Long userId, Long sessionId, UserRequestDto.DeleteUser userRequestDto) {
-        isAccessAvailable(userId, sessionId);
+    public void deleteUser(Long userId, UserRequestDto.DeleteUser userRequestDto) {
         User user = isUserEmpty(userId);
         if(!passwordEncoder.matches(userRequestDto.getPassword(), user.getPassword()))
             throw new CustomException(ErrorType.PASSWORD_MISMATCH);
@@ -84,9 +81,4 @@ public class UserService {
 
         return user;
     }
-    private void isAccessAvailable(Long userId, Long sessionId){
-        if(!userId.equals(sessionId))
-            throw new CustomException(ErrorType.ACCESS_DENIED);
-    }
-    
 }
