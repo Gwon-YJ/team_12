@@ -1,7 +1,10 @@
 package com.example.newsfeed.follow.controller;
 
+import com.example.newsfeed.entity.User;
 import com.example.newsfeed.follow.dto.FollowResponseDto;
 import com.example.newsfeed.follow.service.FollowService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +19,11 @@ public class FollowController {
 
     // 팔로우 생성
     @PostMapping("/follow/{followingId}")
-    public ResponseEntity<String> follow(@PathVariable Long followingId){
+    public ResponseEntity<String> follow(@PathVariable Long followingId, HttpServletRequest servletRequest){
 
         // 현재 로그인한 사용자 정보
-//        User follower =
+        HttpSession session = servletRequest.getSession(false);
+        User follower = (User) session.getAttribute("sessionKey");
 
         return new ResponseEntity<>(followService.follow(followingId, follower), HttpStatus.CREATED);
     }
@@ -38,10 +42,11 @@ public class FollowController {
 
     // 팔로우 취소
     @DeleteMapping("/unfollow/{followingId}")
-    public ResponseEntity<String> unFollow(@PathVariable Long followingId){
+    public ResponseEntity<String> unFollow(@PathVariable Long followingId, HttpServletRequest servletRequest){
 
         // 현재 로그인한 사용자 정보
-//        User follower =
+        HttpSession session = servletRequest.getSession(false);
+        User follower = (User) session.getAttribute("sessionKey");
 
         return new ResponseEntity<>(followService.unFollow(followingId, follower), HttpStatus.OK);
     }

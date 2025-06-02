@@ -22,18 +22,18 @@ public class FollowService {
     public String follow(Long followingId, User follower) {
 
         // 팔로우를 거는 사람이랑 팔로우 대상이랑 id 가 같을 때 예외
-        if(followingId.equals(follower.getId())){
-            throw new RuntimeException("");
+        if(followingId.equals(follower.getUserId())){
+            throw new CustomException(ErrorType.INAPPROPRIATE_APPROACH);
         }
 
         // 팔로우를 이미 했으면 예외
-        Optional<Follow> checkFollow = followRepository.findByFollowingIdAndFollowerId(followingId, follower.getId());
+        Optional<Follow> checkFollow = followRepository.findByFollowingIdAndFollowerId(followingId, follower.getUserId());
         if(checkFollow.isPresent()){
-            throw new RuntimeException("");
+            throw new CustomException(ErrorType.DUPLICATE_TASK);
         }
 
         User following = userRepository.findById(followingId)
-                .orElseThrow(() -> new RuntimeException(""));
+                .orElseThrow(() -> new CustomException(ErrorType.ENTITY_NOT_FOUND));
 
         Follow follow = new Follow(follower, following);
         followRepository.save(follow);
@@ -46,7 +46,7 @@ public class FollowService {
 
         // 유저가 존재하는지 확인
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException(""));
+                .orElseThrow(() -> new CustomException(ErrorType.ENTITY_NOT_FOUND));
 
         List<String> followingUserList = new ArrayList<>();
         for(Follow follow : user.getFollowingList()){
@@ -61,7 +61,7 @@ public class FollowService {
 
         // 유저가 존재하는지 확인
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException(""));
+                .orElseThrow(() -> new CustomException(ErrorType.ENTITY_NOT_FOUND));
 
         List<String> followerUserList = new ArrayList<>();
         for(Follow follow : user.getFollowerList()){
@@ -74,8 +74,8 @@ public class FollowService {
     // 팔로우 취소
     public String unFollow(Long followingId, User follower) {
 
-        Follow follow = followRepository.findByFollowingIdAndFollowerId(followingId, follower.getId())
-                .orElseThrow(() -> new RuntimeException(""));
+        Follow follow = followRepository.findByFollowingIdAndFollowerId(followingId, follower.getUserId())
+                .orElseThrow(() -> new CustomException(ErrorType.ENTITY_NOT_FOUND));
 
         followRepository.delete(follow);
 
