@@ -250,7 +250,7 @@ localhost:8080/posts/{userId}
 <!-- summary 아래 한칸 공백 두어야함 -->
 
 ## 00.개요<br>
-URL : /posts?page=1&size=10<br>
+URL : /posts/page<br>
 HTTP METHOD : GET<br>
 설명 : 게시글 정보를 조회하는 API입니다.<br>
 
@@ -274,7 +274,7 @@ Content-type : application/json
 | size | int    | 페이지 사이즈 |
 
 ```json
-localhost:8080/posts?page=1&size=10
+localhost:8080/posts/page
 ```
 
 ### 3. 응답(Response)
