@@ -1434,14 +1434,12 @@ localhost:8080/follows/{targetUserId}
 ### 3. 응답(Response)
 | 키      | 데이터타입  | 설명         |
 |--------|--------|------------|
-| id     | Long | 팔로우 고유 식별자 | 
 | follow | String   | 팔로우 상태 메시지 |
 
 
 ### 응답 예시
 ```json
 {
-     "id" : 1,
      "follow" : "팔로우 성공하였습니다."
 }
 ```
@@ -1495,7 +1493,6 @@ localhost:8080/follow/following
 ### 3. 응답(Response)
 | 키 | 데이터타입 | 설명         |
 |--|------|------------|
-| id | Long     | 팔로우 고유 식별자 |
 | username1 | String     | 팔로우한 유저    |
 | username2 | String     | 팔로우한 유저    |
 | username3 | String     | 팔로우한 유저    |
@@ -1503,7 +1500,6 @@ localhost:8080/follow/following
 ### 응답 예시
 ```json
 {
-    "id" : 1,
     "username1" : "홍길동",
     "username2" : "이형준",
     "username3" : "아기공룡둘리"
@@ -1559,7 +1555,6 @@ localhost:8080/follows/followers
 ### 3. 응답(Response)
 | 키 | 데이터타입 | 설명         |
 |--|------|------------|
-| id | Long     | 팔로우 고유 식별자 |
 | username1 | String     | 팔로우한 유저    |
 | username2 | String     | 팔로우한 유저    |
 | username3 | String     | 팔로우한 유저    |
@@ -1568,9 +1563,6 @@ localhost:8080/follows/followers
 ### 응답 예시
 ```json
 {
-  "status" : 200,
-  "data" : {
-    "id" : 1,
     "username1" : "길동",
     "username2" : "형준",
     "username3" : "아기공룡희동이"
@@ -1627,13 +1619,11 @@ localhost:8080/follows/{followId}
 ### 3. 응답(Response)
 | 키 | 데이터타입 | 설명         |
 |--|------|------------|
-| id | Long     | 팔로우 고유 식별자 |
 | follow | String     | 팔로우 상태 메시지 |
 
 ### 응답 예시
 ```json
 {
-    "id" : 1,
     "follow" : "팔로우 취소하였습니다."
 }
 ```
