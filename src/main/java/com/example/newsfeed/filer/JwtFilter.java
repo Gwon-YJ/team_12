@@ -35,7 +35,7 @@ public class JwtFilter implements Filter {
 
 
         // 처음 로그인 하는 거야? 그럼 JWT 토큰이 없을 것이니 토큰 먼저 발급 받아!
-        if(requestURI.equals("/api/login")) {
+        if(requestURI.equals("/api/login") || requestURI.equals("/api/signup")) {
             chain.doFilter(request,response);
             return;
         }
@@ -62,7 +62,7 @@ public class JwtFilter implements Filter {
 
         // 그럼 너가 가지고 있는 JWT 토큰은 유효한 토큰이군! 통과!
 
-
+// admin 관련 코드라 주석처리
 //        // 이제부터는 JWT 토큰에 어떤 정보가 들어가 있는지 살펴보자!
 //
 //        // JWT 사용자의 이름을 확인 해보자
