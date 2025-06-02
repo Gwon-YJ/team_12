@@ -19,8 +19,11 @@ public enum ErrorType {
     // 비밀번호 변경 시 불일치
     PASSWORD_MISMATCH(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
     // 리소스 중복
-    RESOURCE_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "이미 등록된 이메일입니다.");
-
+    RESOURCE_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "이미 등록된 이메일입니다."),
+    // 자기자신에 대한 팔로잉 팔로우
+    INAPPROPRIATE_APPROACH(HttpStatus.BAD_REQUEST, "비정상적인 접근입니다."),
+    // 이미 완료된 작업 중복 시행: 팔로우 완료 후 다시 팔로우 하려는 경우
+    DUPLICATE_TASK(HttpStatus.BAD_REQUEST, "이미 완료된 작업입니다.");
 
     private final HttpStatus httpStatus;
     private final String errorMessage;

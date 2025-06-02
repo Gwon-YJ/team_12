@@ -20,6 +20,11 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public UserResponseDto signUp(UserRequestDto.SignUp userRequestDto){
+        //해당 이메일의 사용자 존재 확인 및 존재 시 예외처리
+        Optional<User> optionalUser = Optional.ofNullable(userRepository.findByEmail(userRequestDto.getEmail()));
+        if(optionalUser.isPresent())
+            throw new CustomException(ErrorType.RESOURCE_ALREADY_EXIST);
+
         User user = new User();
         user.setUserName(userRequestDto.getUserName());
         user.setEmail(userRequestDto.getEmail());
@@ -68,6 +73,10 @@ public class UserService {
 
     public void deleteUser(Long userId, UserRequestDto.DeleteUser userRequestDto) {
         User user = isUserEmpty(userId);
+
+        System.out.println(userRequestDto.getPassword());
+        System.out.println(user.getPassword());
+
         if(!passwordEncoder.matches(userRequestDto.getPassword(), user.getPassword()))
             throw new CustomException(ErrorType.PASSWORD_MISMATCH);
         userRepository.deleteById(userId);

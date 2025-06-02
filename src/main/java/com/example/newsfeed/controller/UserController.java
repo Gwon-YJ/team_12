@@ -3,7 +3,6 @@ package com.example.newsfeed.controller;
 import com.example.newsfeed.dto.UserRequestDto;
 import com.example.newsfeed.dto.UserResponseDto;
 import com.example.newsfeed.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +19,7 @@ public class UserController {
     @PostMapping()
     public ResponseEntity<UserResponseDto> signUp(@Valid @RequestBody UserRequestDto.SignUp userRequestDto){
         UserResponseDto resultDto = userService.signUp(userRequestDto);
-        return new ResponseEntity<>(resultDto, HttpStatus.OK);
+        return new ResponseEntity<>(resultDto, HttpStatus.CREATED);
     }
 
     @GetMapping()
@@ -50,6 +49,6 @@ public class UserController {
     @DeleteMapping("{userId}")
     public ResponseEntity<String> deleteUser(@PathVariable Long userId, @RequestBody UserRequestDto.DeleteUser userRequestDto){
         userService.deleteUser(userId, userRequestDto);
-        return new ResponseEntity<>("수정 성공", HttpStatus.OK);
+        return new ResponseEntity<>("삭제 성공", HttpStatus.OK);
     }
 }
