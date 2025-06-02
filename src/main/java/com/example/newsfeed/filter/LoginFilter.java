@@ -9,7 +9,7 @@ import org.springframework.util.PatternMatchUtils;
 
 @Slf4j
 public class LoginFilter implements Filter {
-    private static final String[] FILTER_PASS_URI = {"/login", "/users"};
+    private static final String[] FILTER_PASS_URI = {"/login","/users"};
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {

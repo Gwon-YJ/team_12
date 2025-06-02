@@ -24,6 +24,7 @@ public class Post extends BaseEntity {
     @Column(nullable = false,updatable = true)
     private String content;
 
+    @Setter
     private Long likesCount = 0L;
 
     private Long commentsCount = 0L;
@@ -34,6 +35,10 @@ public class Post extends BaseEntity {
 
     public Post(){
 
+    }
+
+    public Post(Long likesCount){
+        this.likesCount = likesCount;
     }
 
     public Post(String title, String content, User user){
