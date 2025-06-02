@@ -1,4 +1,4 @@
-package org.example.newsfeed.entity;
+package com.example.newsfeed.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

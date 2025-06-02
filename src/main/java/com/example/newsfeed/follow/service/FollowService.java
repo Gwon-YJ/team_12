@@ -1,0 +1,86 @@
+package com.example.newsfeed.follow.service;
+
+import com.example.newsfeed.entity.User;
+import com.example.newsfeed.follow.dto.FollowResponseDto;
+import com.example.newsfeed.follow.entity.Follow;
+import com.example.newsfeed.follow.repository.FollowRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class FollowService {
+
+    private final FollowRepository followRepository;
+    private final UserRepository userRepository;
+
+    // 팔로우 생성
+    public String follow(Long followingId, User follower) {
+
+        // 팔로우를 거는 사람이랑 팔로우 대상이랑 id 가 같을 때 예외
+        if(followingId.equals(follower.getId())){
+            throw new RuntimeException("");
+        }
+
+        // 팔로우를 이미 했으면 예외
+        Optional<Follow> checkFollow = followRepository.findByFollowingIdAndFollowerId(followingId, follower.getId());
+        if(checkFollow.isPresent()){
+            throw new RuntimeException("");
+        }
+
+        User following = userRepository.findById(followingId)
+                .orElseThrow(() -> new RuntimeException(""));
+
+        Follow follow = new Follow(follower, following);
+        followRepository.save(follow);
+
+        return following.getUserName() + "님을 팔로우하였습니다.";
+    }
+
+    // 유저 팔로우 조회(유저가 팔로우한)
+    public FollowResponseDto followingList(Long userId) {
+
+        // 유저가 존재하는지 확인
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException(""));
+
+        List<String> followingUserList = new ArrayList<>();
+        for(Follow follow : user.getFollowingList()){
+            followingUserList.add(follow.getFollowing().getUserName());
+        }
+
+        return new FollowResponseDto(followingUserList);
+    }
+
+    // 유저 팔로워 조회(유저를 팔로우한)
+    public FollowResponseDto followerList(Long userId) {
+
+        // 유저가 존재하는지 확인
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException(""));
+
+        List<String> followerUserList = new ArrayList<>();
+        for(Follow follow : user.getFollowerList()){
+            followerUserList.add(follow.getFollower().getUserName());
+        }
+
+        return new FollowResponseDto(followerUserList);
+    }
+
+    // 팔로우 취소
+    public String unFollow(Long followingId, User follower) {
+
+        Follow follow = followRepository.findByFollowingIdAndFollowerId(followingId, follower.getId())
+                .orElseThrow(() -> new RuntimeException(""));
+
+        followRepository.delete(follow);
+
+        String unfollowUserName = follow.getFollowing().getUserName();
+
+        return unfollowUserName + "님을 언팔로우 하였습니다.";
+    }
+}
