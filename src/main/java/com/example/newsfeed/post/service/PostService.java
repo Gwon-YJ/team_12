@@ -1,5 +1,6 @@
 package com.example.newsfeed.post.service;
 
+import com.example.newsfeed.entity.User;
 import com.example.newsfeed.post.dto.PostPageInfoResponseDto;
 import com.example.newsfeed.post.dto.PostPageResponseDto;
 import com.example.newsfeed.post.entity.Post;
@@ -26,24 +27,22 @@ public class PostService {
     @Transactional
     public PostResponseDto createPost(Long userId, String title, String content) {
 
-//        User user = userRepository.findById(userId)
-//                .orElseThrow(() -> new CustomException(ErrorType.ENTITY_NOT_FOUND));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorType.ENTITY_NOT_FOUND));
 
-//        Post post = new Post(title, content, user);
+        Post post = new Post(title, content, user);
 
-//        Post createPost = postRepository.save(post);
+        Post createPost = postRepository.save(post);
 
-//        return new PostResponseDto(
-//                createPost.getPostId(),
-//                createPost.getUser().getUsername(),
-//                createPost.getTitle(),
-//                createPost.getContent(),
-//                createPost.getLikesCount(),
-//                createPost.getCommentsCount(),
-//                createPost.getCreatedAt(),
-//                createPost.getModifiedAt());
-
-        return null; // <- 임시로 지정해놓은 리턴값, 위에 주석 해제 후 삭제
+        return new PostResponseDto(
+                createPost.getPostId(),
+                createPost.getUser().getUsername(),
+                createPost.getTitle(),
+                createPost.getContent(),
+                createPost.getLikesCount(),
+                createPost.getCommentsCount(),
+                createPost.getCreatedAt(),
+                createPost.getModifiedAt());
     }
 
     // 게시글 수정
@@ -51,40 +50,38 @@ public class PostService {
     public PostResponseDto updatePost(Long postId, Long userId, String title, String content) {
 
         // 입력받은 postId를 찾아서 post 변수에 저장
-//        Post post = postRepository.findById(postId)
-//                .orElseThrow(() -> new CustomException(ErrorType.ENTITY_NOT_FOUND));
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new CustomException(ErrorType.ENTITY_NOT_FOUND));
 
-        // 지금 게시글을 쓴 유저 id 와 입력받은 유저 id 가 다르면 예외처리
-//        if (!post.getUser().getUserId().equals(userId)) {
-//            throw new CustomException(ErrorType.ACCESS_DENIED);
-//        }
-//
-//        post.setTitle(title);
-//        post.setContent(content);
-//
-//        // 변경된 post 를 DB에 저장하고 저장된 결과를 updatedPost 에 저장
-//        Post updatedPost = postRepository.save(post);
+//         지금 게시글을 쓴 유저 id 와 입력받은 유저 id 가 다르면 예외처리
+        if (!post.getUser().getUserId().equals(userId)) {
+            throw new CustomException(ErrorType.ACCESS_DENIED);
+        }
 
-//        return new PostResponseDto(
-//                updatedPost.getPostId(),
-//                updatedPost.getUser().getUsername(),
-//                updatedPost.getTitle(),
-//                updatedPost.getContent(),
-//                updatedPost.getLikesCount(),
-//                updatedPost.getCommentsCount(),
-//                updatedPost.getCreatedAt(),
-//                updatedPost.getModifiedAt());
+        post.setTitle(title);
+        post.setContent(content);
 
-        return null; // <- 임시로 지정해놓은 리턴값, 위에 주석 해제 후 삭제
+        // 변경된 post 를 DB에 저장하고 저장된 결과를 updatedPost 에 저장
+        Post updatedPost = postRepository.save(post);
+
+        return new PostResponseDto(
+                updatedPost.getPostId(),
+                updatedPost.getUser().getUsername(),
+                updatedPost.getTitle(),
+                updatedPost.getContent(),
+                updatedPost.getLikesCount(),
+                updatedPost.getCommentsCount(),
+                updatedPost.getCreatedAt(),
+                updatedPost.getModifiedAt());
 
     }
 
     // 특정 유저 게시글 조회
     public List<PostResponseDto> userPosts(Long userId) {
 
-//        if(!userRepository.existsById(userId)){
-//            throw new CustomException(ErrorType.ENTITY_NOT_FOUND);
-//        }
+        if(!userRepository.existsById(userId)){
+            throw new CustomException(ErrorType.ENTITY_NOT_FOUND);
+        }
 
         return postRepository.findByUserId(userId)
                 .stream()
@@ -125,13 +122,13 @@ public class PostService {
     // 게시글 삭제
     @Transactional
     public void deletePost(Long postId, Long userId) {
-//        Post post = postRepository.findById(postId)
-//                .orElseThrow(() -> new CustomException(ErrorType.ENTITY_NOT_FOUND));
-//
-//        if(!post.getUser().getUserId().equals(userId)){
-//            throw new CustomException(ErrorType.ACCESS_DENIED);
-//        }
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new CustomException(ErrorType.ENTITY_NOT_FOUND));
 
-//        postRepository.delete(post);
+        if(!post.getUser().getUserId().equals(userId)){
+            throw new CustomException(ErrorType.ACCESS_DENIED);
+        }
+
+        postRepository.delete(post);
     }
 }

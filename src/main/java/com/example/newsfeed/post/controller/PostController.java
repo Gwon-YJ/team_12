@@ -2,8 +2,6 @@ package com.example.newsfeed.post.controller;
 
 import com.example.newsfeed.post.dto.*;
 import com.example.newsfeed.post.service.PostService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,15 +18,15 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+    private final JwtUtil jwtUtil;
 
     // 게시글 생성
     @PostMapping
     public ResponseEntity<PostResponseDto> createPost(
-            HttpServletRequest servletRequest,
+            @RequestHeader("Authorization") String token,
             @Valid @RequestBody PostRequestDto requestDto){
 
-        HttpSession session = servletRequest.getSession(false);
-        Long userId = (Long) session.getAttribute("sessionKey");
+        Long userId = jwtUtil.extractRoles(token);
 
         return new ResponseEntity<>(postService.createPost(userId, requestDto.getTitle(), requestDto.getContent()), HttpStatus.CREATED);
     }
@@ -37,11 +35,9 @@ public class PostController {
     @PutMapping("/{postId}")
     public ResponseEntity<PostResponseDto> updatePost(
             @PathVariable Long postId,
-            HttpServletRequest servletRequest,
+            @RequestHeader("Authorization") String token,
             @Valid @RequestBody PostRequestDto requestDto){
-
-        HttpSession session = servletRequest.getSession(false);
-        Long userId = (Long) session.getAttribute("sessionKey");
+        Long userId = jwtUtil.extractRoles(token);
 
         return new ResponseEntity<>(postService.updatePost(postId, userId, requestDto.getTitle(), requestDto.getContent()), HttpStatus.OK);
     }
@@ -61,7 +57,7 @@ public class PostController {
     }
 
     // 게시글 날짜 범위로 검색(수정일자 기준 내림차순)
-    @GetMapping
+    @GetMapping("/paging")
     public ResponseEntity<List<PostResponseDto>> searchPostsByDateRange(
             @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") LocalDateTime startDate, @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") LocalDateTime endDate){
         return new ResponseEntity<>(postService.searchPostsByDateRange(startDate, endDate), HttpStatus.OK);
@@ -69,10 +65,9 @@ public class PostController {
 
     // 게시글 삭제
     @DeleteMapping("/{postId}")
-    public ResponseEntity<Void> deletePost(@PathVariable Long postId, HttpServletRequest servletRequest){
+    public ResponseEntity<Void> deletePost(@PathVariable Long postId, @RequestHeader("Authorization") String token){
 
-        HttpSession session = servletRequest.getSession(false);
-        Long userId = (Long) session.getAttribute("sessionKey");
+        Long userId = jwtUtil.extractRoles(token);
 
         postService.deletePost(postId, userId);
 
