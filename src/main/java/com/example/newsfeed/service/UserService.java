@@ -18,7 +18,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     public String login(LoginRequestDto request) {
-        String userName = request.userName();
+        String userName = request.username();
         String password = request.password();
 
         User user = userRepository.findByUsername(userName).orElseThrow(

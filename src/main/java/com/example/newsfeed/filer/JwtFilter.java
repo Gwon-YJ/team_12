@@ -60,26 +60,26 @@ public class JwtFilter implements Filter {
             httpResponse.getWriter().write("{\"error\": \"Unauthorized\"}");
         }
 
-        // 그럼 너가 가져오 JWT 토큰은 유효한 토큰이군! 통과!
+        // 그럼 너가 가지고 있는 JWT 토큰은 유효한 토큰이군! 통과!
 
 
-        // 이제부터는 JWT 토큰에 어떤 정보가 들어가 있는지 살펴보자!
-
-        // JWT 사용자의 이름을 확인 해보자
-        username = jwtUtil.extractUsername(jwt);
-
-        // 만약 요청한 API 가 관리자 전용 API 인 경우에
-        if(requestURI.startsWith("/api/admin")) {
-
-            // JWT에 관리자 권한이 있는지 확인
-            if(jwtUtil.hasRole(jwt,"ADMIN")) {
-                chain.doFilter(request, response);
-            } else {
-                // 권한이 없으면 403 Forbidden 응답
-                httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "접근 권한이 없습니다.");
-            }
-            return;
-        }
+//        // 이제부터는 JWT 토큰에 어떤 정보가 들어가 있는지 살펴보자!
+//
+//        // JWT 사용자의 이름을 확인 해보자
+//        username = jwtUtil.extractUsername(jwt);
+//
+//        // 만약 요청한 API 가 관리자 전용 API 인 경우에
+//        if(requestURI.startsWith("/api/admin")) {
+//
+//            // JWT에 관리자 권한이 있는지 확인
+//            if(jwtUtil.hasRole(jwt,"ADMIN")) {
+//                chain.doFilter(request, response);
+//            } else {
+//                // 권한이 없으면 403 Forbidden 응답
+//                httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "접근 권한이 없습니다.");
+//            }
+//            return;
+//        }
 
         // 만약 요청한 API 가 사용자 전용 API 인 경우에
         if(requestURI.startsWith("/api/user")) {
@@ -96,8 +96,6 @@ public class JwtFilter implements Filter {
 
         // 전용 API가 아닌 일반 API의 경우
         chain.doFilter(request, response);
-
-
     }
 }
 
