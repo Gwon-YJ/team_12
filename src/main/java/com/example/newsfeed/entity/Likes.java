@@ -15,18 +15,20 @@ public class Likes extends BaseEntity {
 
 
     @Column(nullable = false)
+    @Setter
     private Long likeCount;
 
     public Likes(){}
 
     public Likes(Long likeCount){
-        this.likeCount =likeCount;
+        this.likeCount = likeCount;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "comment_id")
-    @Setter
-    private Comment comment;
+    public Likes(User user,Long likeCount){
+        this.likeCount =likeCount;
+        //this.post = post;
+        this.user = user;
+    }
 
     @ManyToOne
     @JoinColumn(name = "post_id")
