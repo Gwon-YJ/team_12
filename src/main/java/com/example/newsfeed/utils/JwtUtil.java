@@ -89,6 +89,14 @@ public class JwtUtil {
         return extractAllClaims(token).get("auth", String.class);
     }
 
+    public String extractBearerToken(String header) {
+        if (header != null && header.startsWith("Bearer ")) {
+            return header.substring(7);  // "Bearer " 길이만큼 잘라서 토큰만 반환
+        }
+        return header;
+    }
+
+
     /**
      * JWT 토큰에서 특정 역할이 포함되어 있는지 확인합니다.
      * @param token JWT 토큰
@@ -99,6 +107,7 @@ public class JwtUtil {
         String roles = extractRoles(token);
         return roles.contains(role);
     }
+
 
     /**
      * JWT 토큰의 유효성을 검증합니다.

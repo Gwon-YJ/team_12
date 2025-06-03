@@ -4,7 +4,6 @@ import com.example.newsfeed.entity.User;
 import com.example.newsfeed.enums.UserRoleEnum;
 import com.example.newsfeed.service.UserService;
 import com.example.newsfeed.utils.PasswordEncoder;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
