@@ -25,6 +25,7 @@ public enum ErrorType {
     // 이미 완료된 작업 중복 시행: 팔로우 완료 후 다시 팔로우 하려는 경우
     DUPLICATE_TASK(HttpStatus.BAD_REQUEST, "이미 완료된 작업입니다.");
 
+
     private final HttpStatus httpStatus;
     private final String errorMessage;
 

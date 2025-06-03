@@ -75,15 +75,17 @@ public class FollowService {
     }
 
     // 팔로우 취소
-    public String unFollow(Long followingId, User follower) {
-
-        Follow follow = followRepository.findByFollowingIdAndFollowerId(followingId, follower.getUserId())
+    public String unFollow(Long followId, User follower) {
+        Follow follow = followRepository.findById(followId)
                 .orElseThrow(() -> new CustomException(ErrorType.ENTITY_NOT_FOUND));
 
+        // 보안 체크: 현재 로그인한 사용자가 이 팔로우의 주인인지 확인
+        if (!follow.getFollower().getUserId().equals(follower.getUserId())) {
+            throw new CustomException(ErrorType.ACCESS_DENIED); // 너가 정의한 에러로 바꿔도 좋아
+        }
+
         followRepository.delete(follow);
-
-        String unfollowUserName = follow.getFollowing().getUserName();
-
-        return unfollowUserName + "님을 언팔로우 하였습니다.";
+        return follow.getFollowing().getUserName() + "님을 언팔로우 하였습니다.";
     }
+
 }
