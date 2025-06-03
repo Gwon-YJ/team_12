@@ -9,6 +9,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
+
+
 
 @RestController
 @RequestMapping
@@ -18,36 +22,43 @@ public class FollowController {
     private final FollowService followService;
 
     // 팔로우 생성
-    @PostMapping("/follow/{followingId}")
-    public ResponseEntity<String> follow(@PathVariable Long followingId, HttpServletRequest servletRequest){
+    @PostMapping("/follow/{targetUserId}")
+    public ResponseEntity<?> follow(@PathVariable Long targetUserId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User follower = (User) authentication.getPrincipal();
 
-        // 현재 로그인한 사용자 정보
-        HttpSession session = servletRequest.getSession(false);
-        User follower = (User) session.getAttribute("sessionKey");
-
-        return new ResponseEntity<>(followService.follow(followingId, follower), HttpStatus.CREATED);
+        return new ResponseEntity<>(followService.follow(targetUserId, follower), HttpStatus.CREATED);
     }
+
 
     // 유저 팔로우 조회(유저가 팔로우한)
-    @GetMapping("/{userId}/following")
-    public ResponseEntity<FollowResponseDto> followingList(@PathVariable Long userId){
-        return new ResponseEntity<>(followService.followingList(userId), HttpStatus.OK);
+    @GetMapping("/follow/following")
+    public ResponseEntity<?> getMyFollowing() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+
+        return new ResponseEntity<>(followService.followingList(user.getUserId()), HttpStatus.OK);
     }
+
 
     // 유저 팔로워 조회(유저를 팔로우한)
-    @GetMapping("/{userId}/follower")
-    public ResponseEntity<FollowResponseDto> followerList(@PathVariable Long userId){
-        return new ResponseEntity<>(followService.followerList(userId), HttpStatus.OK);
+    @GetMapping("/follow/followers")
+    public ResponseEntity<?> getMyFollowers() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+
+        return new ResponseEntity<>(followService.followerList(user.getUserId()), HttpStatus.OK);
     }
+
 
     // 팔로우 취소
-    @DeleteMapping("/unfollow/{followingId}")
-    public ResponseEntity<String> unFollow(@PathVariable Long followingId, HttpServletRequest servletRequest){
+    @DeleteMapping("/follow/{followId}")
+    public ResponseEntity<String> unFollow(@PathVariable Long followId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User follower = (User) authentication.getPrincipal();  // 현재 로그인한 사용자
 
-        // 현재 로그인한 사용자 정보
-        HttpSession session = servletRequest.getSession(false);
-        User follower = (User) session.getAttribute("sessionKey");
-
-        return new ResponseEntity<>(followService.unFollow(followingId, follower), HttpStatus.OK);
+        followService.unFollow(followId, follower);
+        return new ResponseEntity<>("팔로우 취소 완료", HttpStatus.OK);
     }
+
 }

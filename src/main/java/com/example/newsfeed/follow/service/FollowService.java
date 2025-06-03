@@ -1,9 +1,12 @@
 package com.example.newsfeed.follow.service;
 
 import com.example.newsfeed.entity.User;
+import com.example.newsfeed.exception.CustomException;
+import com.example.newsfeed.exception.ErrorType;
 import com.example.newsfeed.follow.dto.FollowResponseDto;
 import com.example.newsfeed.follow.entity.Follow;
 import com.example.newsfeed.follow.repository.FollowRepository;
+import com.example.newsfeed.userRepository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
