@@ -6,32 +6,29 @@ import lombok.Setter;
 
 @Getter
 @Entity
-@Table(name = "follows")
-public class Follow extends BaseEntity{
+@Table(name = "likse")
+public class Likes extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long followId;
+    private Long likseId;
 
 
     @Column(nullable = false)
-    private Long follows;
+    @Setter
+    private Long likeCount;
 
-    public Follow(){}
+    public Likes(){}
 
-    public Follow(Long follows){
-        this.follows =follows;
+    public Likes(Long likeCount){
+        this.likeCount = likeCount;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "like_id")
-    @Setter
-    private Likes like;
-
-    @ManyToOne
-    @JoinColumn(name = "comment_id")
-    @Setter
-    private Comment comment;
+    public Likes(User user,Long likeCount){
+        this.likeCount =likeCount;
+        //this.post = post;
+        this.user = user;
+    }
 
     @ManyToOne
     @JoinColumn(name = "post_id")
@@ -42,5 +39,4 @@ public class Follow extends BaseEntity{
     @JoinColumn(name = "user_id")
     @Setter
     private User user;
-
 }

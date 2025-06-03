@@ -19,5 +19,4 @@ public class UserController {
         log.info("유저 페이지 호출");
         return "유저 페이지 리소스가 허가 되었습니다.";
     }
-
 }

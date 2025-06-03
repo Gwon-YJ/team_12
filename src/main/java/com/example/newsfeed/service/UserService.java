@@ -20,10 +20,10 @@ public class UserService {
     private final UserRepository userRepository;
 
     public String login(LoginRequestDto request) {
-        String username = request.username();
+        String email = request.email();
         String password = request.password();
 
-        User user = userRepository.findByUsername(username).orElseThrow(
+        User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
         );
 
@@ -31,7 +31,7 @@ public class UserService {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
-        return jwtUtil.generateToken(user.getUsername(), user.getRole());
+        return jwtUtil.generateToken(user.getEmail(), user.getRole());
     }
 
     public void signup(SignupRequestDto request) {

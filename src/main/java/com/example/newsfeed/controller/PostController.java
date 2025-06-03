@@ -36,7 +36,7 @@ public class PostController {
                 .body(postService.createPost(username, requestDto.getTitle(), requestDto.getContent()));
     }
 
-    // 게시글 수정
+    //게시글 수정
     @PutMapping("/{postId}")
     public ResponseEntity<PostResponseDto> updatePost(
             @PathVariable Long postId,

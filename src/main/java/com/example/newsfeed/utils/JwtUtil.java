@@ -63,16 +63,16 @@ public class JwtUtil {
 
     /**
      * JWT 토큰을 생성합니다.
-     * @param username 사용자 이름
+     * @param email 사용자 이름
      * @param userRole 사용자의 역할 (권한)
      * @return 생성된 JWT 토큰
      */
-    public String generateToken(String username, UserRoleEnum userRole) {
+    public String generateToken(String email, UserRoleEnum userRole) {
         Date date = new Date();
 
         return BEARER_PREFIX +
                 Jwts.builder()
-                        .setSubject(username) // 사용자 식별자 (ID)
+                        .setSubject(email) // 사용자 식별자 (ID)
                         .claim("auth", userRole) // 사용자 권한 (역할)
                         .setExpiration(new Date(date.getTime() + TOKEN_TIME)) // 만료 시간 설정
                         .setIssuedAt(date) // 발급 시간 설정
