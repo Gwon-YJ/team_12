@@ -1,13 +1,17 @@
 package com.example.newsfeed.exception;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 @Getter
-@AllArgsConstructor
+//@AllArgsConstructor
 public class CustomException extends RuntimeException{
-    private String errorCode;
-    private String message;
-    private HttpStatus status;
+//    private String errorCode;
+//    private String message;
+//    private HttpStatus status;
+
+    private final ErrorType errorType;
+    public CustomException(ErrorType errorType){
+        this.errorType = errorType;
+    }
+
 }

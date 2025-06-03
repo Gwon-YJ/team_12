@@ -4,10 +4,11 @@ import com.example.newsfeed.dto.LikesResponseDto;
 import com.example.newsfeed.entity.Likes;
 import com.example.newsfeed.entity.Post;
 import com.example.newsfeed.entity.User;
+import com.example.newsfeed.exception.CustomException;
+import com.example.newsfeed.exception.ErrorType;
 import com.example.newsfeed.repository.LikesRepository;
 import com.example.newsfeed.repository.PostRepository;
 import com.example.newsfeed.repository.UserRepository;
-import com.example.newsfeed.exception.PostException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class LikesService {
 
     @Transactional//더티 체킹활용
     public LikesResponseDto signup(Long likesId, Long userId, Long likesCount) {
-        Post post = postRepository.findById(likesId).orElseThrow(PostException.PostNotFoundException::new);
+        Post post = postRepository.findById(likesId).orElseThrow(()->new CustomException(ErrorType.ENTITY_NOT_FOUND));
                 // PostException.PostNotFoundException::new == () -> new PostException.PostNotFoundException
                 //에러 타입 선언(() -> new CustomException(ErrorType.ENTITY_NOT_FOUND));//post 있으면 아이디에 해당하는 포스트를 객체 담는다고 / 예외처리를 던져라
 

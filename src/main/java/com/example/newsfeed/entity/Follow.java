@@ -19,20 +19,6 @@ public class Follow extends BaseEntity {
 
     public Follow(){}
 
-    public Follow(Long follows){
-        this.follows =follows;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "like_id")
-    @Setter
-    private Likes like;
-
-    @ManyToOne
-    @JoinColumn(name = "comment_id")
-    @Setter
-    private Comment comment;
-
     @ManyToOne
     @JoinColumn(name = "post_id")
     @Setter
@@ -43,4 +29,20 @@ public class Follow extends BaseEntity {
     @Setter
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "follower_Id",nullable = false)
+    private User follower;
+
+    @ManyToOne
+    @JoinColumn(name = "following_Id",nullable = false)
+    private User following;
+
+    public Follow(Long follows){
+        this.follows =follows;
+    }
+
+    public Follow(User follows,User following){
+        this.follower = follows;
+        this.following = following;
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.newsfeed.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -50,5 +51,17 @@ public class UserRequestDto {
         private final String savePassword;
         @NotBlank
         private final String changePassword;
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public static class LoginRequestDto {
+
+        @Email
+        @NotBlank
+        private final String email;
+
+        @NotBlank
+        private final String password;
     }
 }
