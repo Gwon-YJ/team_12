@@ -17,7 +17,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtFilter implements Filter {
 
-    private final com.example.newsfeed.config.JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -76,8 +77,10 @@ public class PostController {
     // 게시글 날짜 범위로 검색(수정일자 기준 내림차순)
     @GetMapping
     public ResponseEntity<List<PostResponseDto>> searchPostsByDateRange(
-            @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") LocalDateTime startDate, @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") LocalDateTime endDate){
-        return new ResponseEntity<>(postService.searchPostsByDateRange(startDate, endDate), HttpStatus.OK);
+            @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") LocalDate startDate, @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") LocalDate endDate){
+        LocalDateTime startDateTime = startDate.atStartOfDay();
+        LocalDateTime endDateTime = endDate.atTime(23, 59, 59);
+        return new ResponseEntity<>(postService.searchPostsByDateRange(startDateTime, endDateTime), HttpStatus.OK);
     }
 
     // 게시글 삭제
