@@ -1,6 +1,8 @@
 package com.example.newsfeed.service;
 
+import com.example.newsfeed.config.JwtUtil;
 import com.example.newsfeed.config.PasswordEncoder;
+import com.example.newsfeed.config.UserRoleEnum;
 import com.example.newsfeed.dto.UserResponseDto;
 import com.example.newsfeed.dto.UserRequestDto;
 import com.example.newsfeed.entity.User;
@@ -18,10 +20,27 @@ import java.util.stream.Collectors;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
-    public UserResponseDto signUp(UserRequestDto.SignUp userRequestDto){
+    public String login(UserRequestDto.Login userRequestDto) {
+        String email = userRequestDto.getEmail();
+        String password = userRequestDto.getPassword();
+
+
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
+        );
+
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        return jwtUtil.generateToken(user.getCustomId(), user.getRole());
+    }
+
+    public void signUp(UserRequestDto.SignUp userRequestDto){
         //해당 이메일의 사용자 존재 확인 및 존재 시 예외처리
-        Optional<User> optionalUser = Optional.ofNullable(userRepository.findByEmail(userRequestDto.getEmail()));
+        Optional<User> optionalUser = userRepository.findByEmail(userRequestDto.getEmail());
         if(optionalUser.isPresent())
             throw new CustomException(ErrorType.RESOURCE_ALREADY_EXIST);
 
@@ -29,10 +48,9 @@ public class UserService {
         user.setUserName(userRequestDto.getUserName());
         user.setEmail(userRequestDto.getEmail());
         user.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
+        user.setCustomId(userRequestDto.getCustomId());
+        user.setRole(UserRoleEnum.USER);
         userRepository.save(user);
-        UserResponseDto userResponseDto = new UserResponseDto(user);
-
-        return userResponseDto;
     }
 
     public List<UserResponseDto> findUserList(UserRequestDto.FindByName userRequestDto){
@@ -49,10 +67,25 @@ public class UserService {
         return userResponseDto;
     }
 
-    public UserResponseDto updateUser(Long userId, UserRequestDto.UpdateUser userRequestDto) {
+
+    public UserResponseDto updateUser(Long userId, String authorizationHeader, UserRequestDto.UpdateUser userRequestDto) {
+        String token = jwtUtil.extractBearerToken(authorizationHeader);  // "Bearer " 제거
+        //토큰 만료 확인
+        if(!jwtUtil.validateToken(token))
+            throw new CustomException(ErrorType.TOKEN_EXPIRED);
+
         User user = isUserEmpty(userId);
+
+        //접근 권한 확인
+        String customId = jwtUtil.extractCustomId(token);
+        if(!customId.equals(user.getCustomId()))
+            throw new CustomException(ErrorType.ACCESS_DENIED);
+
+        // 비밀번호 검증
         if(!passwordEncoder.matches(userRequestDto.getPassword(), user.getPassword()))
             throw new CustomException(ErrorType.PASSWORD_MISMATCH);
+
+        //사용자 정보 변경
         if(userRequestDto.getUserName() != null)
             user.setUserName(userRequestDto.getUserName());
         if(userRequestDto.getEmail() != null)
@@ -63,31 +96,54 @@ public class UserService {
         return userResponseDto;
     }
 
-    public void updateUserPw(Long userId, UserRequestDto.UpdatePw userRequestDto) {
+    public void updateUserPw(Long userId, String authorizationHeader, UserRequestDto.UpdatePw userRequestDto) {
+        String token = jwtUtil.extractBearerToken(authorizationHeader);  // "Bearer " 제거
+        //토큰 만료 확인
+        if(!jwtUtil.validateToken(token))
+            throw new CustomException(ErrorType.TOKEN_EXPIRED);
+
         User user = isUserEmpty(userId);
+
+        //접근 권한 확인
+        String customId = jwtUtil.extractCustomId(token);
+        if(!customId.equals(user.getCustomId()))
+            throw new CustomException(ErrorType.ACCESS_DENIED);
+
+        // 비밀번호 검증
         if(!passwordEncoder.matches(userRequestDto.getSavePassword(), user.getPassword()))
             throw new CustomException(ErrorType.PASSWORD_MISMATCH);
+
+        // 비밀번호 변경
         user.setPassword(passwordEncoder.encode(userRequestDto.getChangePassword()));
         userRepository.save(user);
     }
 
-    public void deleteUser(Long userId, UserRequestDto.DeleteUser userRequestDto) {
+    public void deleteUser(Long userId, String authorizationHeader, UserRequestDto.DeleteUser userRequestDto) {
+        String token = jwtUtil.extractBearerToken(authorizationHeader);  // "Bearer " 제거
+        //토큰 만료 확인
+        if(!jwtUtil.validateToken(token))
+            throw new CustomException(ErrorType.TOKEN_EXPIRED);
+
         User user = isUserEmpty(userId);
 
-        System.out.println(userRequestDto.getPassword());
-        System.out.println(user.getPassword());
+        //접근 권한 확인
+        String customId = jwtUtil.extractCustomId(token);
+        if(!customId.equals(user.getCustomId()))
+            throw new CustomException(ErrorType.ACCESS_DENIED);
 
+        // 비밀번호 검증
         if(!passwordEncoder.matches(userRequestDto.getPassword(), user.getPassword()))
             throw new CustomException(ErrorType.PASSWORD_MISMATCH);
+
+        // 삭제
         userRepository.deleteById(userId);
     }
 
-    private User isUserEmpty(Long userId){
+    private User isUserEmpty(Long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if(optionalUser.isEmpty())
             throw new CustomException(ErrorType.ENTITY_NOT_FOUND);
-        User user = optionalUser.get();
-
-        return user;
+        return optionalUser.get();
     }
+
 }

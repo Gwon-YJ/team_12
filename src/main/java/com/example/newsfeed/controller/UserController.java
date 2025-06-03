@@ -1,5 +1,7 @@
 package com.example.newsfeed.controller;
 
+import com.example.newsfeed.config.JwtUtil;
+import com.example.newsfeed.dto.LoginResponseDto;
 import com.example.newsfeed.dto.UserRequestDto;
 import com.example.newsfeed.dto.UserResponseDto;
 import com.example.newsfeed.service.UserService;
@@ -15,11 +17,19 @@ import java.util.List;
 @RestController
 public class UserController {
     private final UserService userService;
+    private final JwtUtil jwtUtil;
 
-    @PostMapping()
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDto> login(@RequestBody UserRequestDto.Login userRequestDto) {
+        String token  = userService.login(userRequestDto);
+        return ResponseEntity.ok(new LoginResponseDto(token));
+    }
+
+
+    @PostMapping("/signup")
     public ResponseEntity<UserResponseDto> signUp(@Valid @RequestBody UserRequestDto.SignUp userRequestDto){
-        UserResponseDto resultDto = userService.signUp(userRequestDto);
-        return new ResponseEntity<>(resultDto, HttpStatus.CREATED);
+        userService.signUp(userRequestDto);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping()
@@ -35,20 +45,20 @@ public class UserController {
     }
 
     @PatchMapping("/{userId}")
-    public ResponseEntity<UserResponseDto> updateUser(@PathVariable Long userId, @Valid @RequestBody UserRequestDto.UpdateUser userRequestDto){
-        UserResponseDto resultDto = userService.updateUser(userId, userRequestDto);
+    public ResponseEntity<UserResponseDto> updateUser(@PathVariable Long userId,@RequestHeader("Authorization") String authorizationHeader, @Valid @RequestBody UserRequestDto.UpdateUser userRequestDto){
+        UserResponseDto resultDto = userService.updateUser(userId, authorizationHeader, userRequestDto);
         return new ResponseEntity<>(resultDto, HttpStatus.OK);
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<String> updateUserPw(@PathVariable Long userId, @Valid @RequestBody UserRequestDto.UpdatePw userRequestDto){
-        userService.updateUserPw(userId, userRequestDto);
+    public ResponseEntity<String> updateUserPw(@PathVariable Long userId,@RequestHeader("Authorization") String authorizationHeader, @Valid @RequestBody UserRequestDto.UpdatePw userRequestDto){
+        userService.updateUserPw(userId, authorizationHeader, userRequestDto);
         return new ResponseEntity<>("수정 성공", HttpStatus.OK);
     }
 
     @DeleteMapping("{userId}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long userId, @RequestBody UserRequestDto.DeleteUser userRequestDto){
-        userService.deleteUser(userId, userRequestDto);
+    public ResponseEntity<String> deleteUser(@PathVariable Long userId,@RequestHeader("Authorization") String authorizationHeader, @RequestBody UserRequestDto.DeleteUser userRequestDto){
+        userService.deleteUser(userId, authorizationHeader, userRequestDto);
         return new ResponseEntity<>("삭제 성공", HttpStatus.OK);
     }
 }

@@ -10,14 +10,14 @@ public class UserResponseDto {
     private final Long id;
     private final String userName;
     private final String email;
-    private final LocalDateTime localDateTime;
+    private final LocalDateTime createdAt;
     private final LocalDateTime modifiedAt;
 
     public UserResponseDto(User user){
         this.id = user.getUserId();
         this.userName = user.getUserName();
         this.email = user.getEmail();
-        this.localDateTime = user.getLocalDateTime();
+        this.createdAt = user.getCreatedAt();
         this.modifiedAt = user.getModifiedAt();
     }
 }

@@ -41,6 +41,12 @@ dependencies {
     implementation 'at.favre.lib:bcrypt:0.10.2'
     // validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    //jwt
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+    // P6Spy 의존성 추가
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
 }
 
 tasks.named('test') {

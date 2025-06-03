@@ -13,6 +13,8 @@ public class UserRequestDto {
         @NotBlank
         private final String userName;
         @NotBlank
+        private final String customId;
+        @NotBlank
         private final String email;
         @NotBlank
         private final String password;
@@ -50,5 +52,14 @@ public class UserRequestDto {
         private final String savePassword;
         @NotBlank
         private final String changePassword;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class Login{
+        @NotBlank
+        private final String email;
+        @NotBlank
+        private final String password;
     }
 }
