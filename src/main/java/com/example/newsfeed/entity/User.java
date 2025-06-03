@@ -1,13 +1,10 @@
 package com.example.newsfeed.entity;
 
 
-import com.example.newsfeed.follow.entity.Follow;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -29,11 +26,12 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
-    //팔로우
-    @OneToMany(mappedBy = "following", fetch = FetchType.LAZY)
-    private List<Follow> followingList;
+    public User(String userName, String email, String password){
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+    }
 
-    @OneToMany(mappedBy = "follower", fetch = FetchType.LAZY)
-    private List<Follow> followerList;
+
 
 }

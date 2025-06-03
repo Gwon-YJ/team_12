@@ -36,6 +36,11 @@ dependencies {
     implementation 'mysql:mysql-connector-java:8.0.28' // 레거시 MySQL JDBC 드라이버
     // or
     implementation 'org.mariadb.jdbc:mariadb-java-client' // MariaDB 전용 드라이버
+
+    // for password encoder
+    implementation 'at.favre.lib:bcrypt:0.10.2'
+    // validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
 tasks.named('test') {
