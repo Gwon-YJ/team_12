@@ -1,10 +1,11 @@
 package com.example.newsfeed.post.service;
 
 import com.example.newsfeed.entity.User;
+import com.example.newsfeed.post.JwtUtil;
 import com.example.newsfeed.post.dto.PostPageInfoResponseDto;
 import com.example.newsfeed.post.dto.PostPageResponseDto;
-import com.example.newsfeed.post.entity.Post;
 import com.example.newsfeed.post.dto.PostResponseDto;
+import com.example.newsfeed.post.entity.Post;
 import com.example.newsfeed.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,41 +21,33 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostService {
 
+    private final JwtUtil jwtUtil;
     private final PostRepository postRepository;
-//    private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
     // 게시글 생성
     @Transactional
-    public PostResponseDto createPost(Long userId, String title, String content) {
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(ErrorType.ENTITY_NOT_FOUND));
+    public PostResponseDto createPost(String customId, String title, String content) {
+        // DB에서 사용자 꼭 조회해야 함
+        User user = (User) userRepository.findBycustomId(customId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
         Post post = new Post(title, content, user);
+        Post savedPost = postRepository.save(post);
 
-        Post createPost = postRepository.save(post);
-
-        return new PostResponseDto(
-                createPost.getPostId(),
-                createPost.getUser().getUsername(),
-                createPost.getTitle(),
-                createPost.getContent(),
-                createPost.getLikesCount(),
-                createPost.getCommentsCount(),
-                createPost.getCreatedAt(),
-                createPost.getModifiedAt());
+        return PostResponseDto.toDto(savedPost);
     }
 
     // 게시글 수정
     @Transactional
-    public PostResponseDto updatePost(Long postId, Long userId, String title, String content) {
+    public PostResponseDto updatePost(Long postId, String customId, String title, String content) {
 
         // 입력받은 postId를 찾아서 post 변수에 저장
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorType.ENTITY_NOT_FOUND));
 
 //         지금 게시글을 쓴 유저 id 와 입력받은 유저 id 가 다르면 예외처리
-        if (!post.getUser().getUserId().equals(userId)) {
+        if (!post.getUser().getCustomId().equals(customId)) {
             throw new CustomException(ErrorType.ACCESS_DENIED);
         }
 
@@ -66,7 +59,7 @@ public class PostService {
 
         return new PostResponseDto(
                 updatedPost.getPostId(),
-                updatedPost.getUser().getUsername(),
+                updatedPost.getUser().getUserName(),
                 updatedPost.getTitle(),
                 updatedPost.getContent(),
                 updatedPost.getLikesCount(),
@@ -83,7 +76,7 @@ public class PostService {
             throw new CustomException(ErrorType.ENTITY_NOT_FOUND);
         }
 
-        return postRepository.findByUserId(userId)
+        return postRepository.findByUserUserId(userId)
                 .stream()
                 .map(PostResponseDto::toDto)
                 .toList();
@@ -121,11 +114,11 @@ public class PostService {
 
     // 게시글 삭제
     @Transactional
-    public void deletePost(Long postId, Long userId) {
+    public void deletePost(Long postId, String customId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorType.ENTITY_NOT_FOUND));
 
-        if(!post.getUser().getUserId().equals(userId)){
+        if (!post.getUser().getCustomId().equals(customId)) {
             throw new CustomException(ErrorType.ACCESS_DENIED);
         }
 

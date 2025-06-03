@@ -1,9 +1,14 @@
 package com.example.newsfeed.post.controller;
 
-import com.example.newsfeed.post.dto.*;
+import com.example.newsfeed.post.JwtUtil;
+import com.example.newsfeed.post.dto.PostPageInfoResponseDto;
+import com.example.newsfeed.post.dto.PostPageRequestDto;
+import com.example.newsfeed.post.dto.PostRequestDto;
+import com.example.newsfeed.post.dto.PostResponseDto;
 import com.example.newsfeed.post.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/posts")
@@ -20,26 +26,37 @@ public class PostController {
     private final PostService postService;
     private final JwtUtil jwtUtil;
 
+
     // 게시글 생성
     @PostMapping
     public ResponseEntity<PostResponseDto> createPost(
-            @RequestHeader("Authorization") String token,
-            @Valid @RequestBody PostRequestDto requestDto){
+            @RequestHeader("Authorization") String authorizationHeader,
+            @Valid @RequestBody PostRequestDto requestDto) {
+        String token = jwtUtil.extractBearerToken(authorizationHeader);  // "Bearer " 제거
+        String customId = jwtUtil.extractCustomId(token);
 
-        Long userId = jwtUtil.extractRoles(token);
-
-        return new ResponseEntity<>(postService.createPost(userId, requestDto.getTitle(), requestDto.getContent()), HttpStatus.CREATED);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(postService.createPost(customId, requestDto.getTitle(), requestDto.getContent()));
     }
 
     // 게시글 수정
     @PutMapping("/{postId}")
     public ResponseEntity<PostResponseDto> updatePost(
             @PathVariable Long postId,
-            @RequestHeader("Authorization") String token,
-            @Valid @RequestBody PostRequestDto requestDto){
-        Long userId = jwtUtil.extractRoles(token);
+            @RequestHeader("Authorization") String authorizationHeader,
+            @Valid @RequestBody PostRequestDto requestDto) {
 
-        return new ResponseEntity<>(postService.updatePost(postId, userId, requestDto.getTitle(), requestDto.getContent()), HttpStatus.OK);
+        String token = jwtUtil.extractBearerToken(authorizationHeader);  // "Bearer " 제거
+        String customId = jwtUtil.extractCustomId(token);
+
+        PostResponseDto response = postService.updatePost(
+                postId,
+                customId,
+                requestDto.getTitle(),
+                requestDto.getContent());
+
+        return ResponseEntity.ok(response);
     }
 
     // 특정 유저 게시글 리스트 조회
@@ -65,11 +82,12 @@ public class PostController {
 
     // 게시글 삭제
     @DeleteMapping("/{postId}")
-    public ResponseEntity<Void> deletePost(@PathVariable Long postId, @RequestHeader("Authorization") String token){
+    public ResponseEntity<Void> deletePost(@PathVariable Long postId, @RequestHeader("Authorization") String authorizationHeader){
 
-        Long userId = jwtUtil.extractRoles(token);
+        String token = jwtUtil.extractBearerToken(authorizationHeader);  // "Bearer " 제거
+        String customId = jwtUtil.extractCustomId(token);
 
-        postService.deletePost(postId, userId);
+        postService.deletePost(postId, customId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
