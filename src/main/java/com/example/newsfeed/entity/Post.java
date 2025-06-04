@@ -1,8 +1,5 @@
 package com.example.newsfeed.entity;
 
-
-import com.example.newsfeed.entity.BaseEntity;
-import com.example.newsfeed.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,6 +1,5 @@
 package com.example.newsfeed.dto;
 
-import com.example.newsfeed.entity.Likes;
 import lombok.Getter;
 
 @Getter

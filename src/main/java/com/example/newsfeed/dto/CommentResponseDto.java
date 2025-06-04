@@ -1,8 +1,6 @@
 package com.example.newsfeed.dto;
 
-import com.example.newsfeed.entity.Comment;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

@@ -44,7 +44,7 @@ public class CommentService {
         Comment commentEntity = new Comment(comment,createComments);
         commentEntity.setPost(post);
         commentEntity.setUser(user);
-        Comment createComment = commentRepository.save(commentEntity); //사실 인스타갬성으로 좋아요 개수랑 댓글 개수만 게시글이랑 표시하려고했죵
+        Comment createComment = commentRepository.save(commentEntity);
         post.setCommentsCount(createComment.getCommentsCount());
 
         return new CommentResponseDto(post.getPostId(),post.getUser().getUserName(),
@@ -76,10 +76,6 @@ public class CommentService {
             throw new CustomException(ErrorType.ENTITY_NOT_FOUND);
         }
 
-        //권한 검증
-//        if(!post.getUser().getUserId().equals(customId)){
-//            throw new CustomException(ErrorType.ACCESS_DENIED);
-//        }
 
         Comment deleteComment = optionalComment.get();
 

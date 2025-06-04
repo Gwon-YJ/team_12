@@ -1,11 +1,9 @@
 package com.example.newsfeed.controller;
 
 import com.example.newsfeed.config.JwtUtil;
-import com.example.newsfeed.entity.User;
 import com.example.newsfeed.dto.FollowResponseDto;
 import com.example.newsfeed.service.FollowService;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
