@@ -1,8 +1,5 @@
 package com.example.newsfeed.config;
 
-
-import com.example.newsfeed.filer.JwtFilter;
-import com.example.newsfeed.utils.JwtUtil;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,4 +18,3 @@ public class FilterConfig {
         return registrationBean;
     }
 }
-
