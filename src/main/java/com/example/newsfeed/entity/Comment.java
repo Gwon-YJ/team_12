@@ -2,10 +2,13 @@ package com.example.newsfeed.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
+@Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "comments")
 public class Comment extends BaseEntity{
     @Id
@@ -13,21 +16,23 @@ public class Comment extends BaseEntity{
     private Long commentId;
 
     @Column(nullable = false)
-    private Long comment;
+    private String comment;
 
-    private Long commentscount;
+    @Column(nullable = false)
+    private Long commentsCount;
 
-    public Comment(){}
-
-    // 테스트 커밋
+    public Comment(String comment,Long commentsCount){
+        this.comment = comment;
+        this.commentsCount = commentsCount;
+    }
 
     @ManyToOne
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "postId") // 해고 당했어여 들켰다요
     @Setter
     private Post post;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "userId")
     @Setter
     private User user;
 
