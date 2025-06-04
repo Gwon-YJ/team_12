@@ -6,12 +6,12 @@ import lombok.Setter;
 
 @Getter
 @Entity
-@Table(name = "likse")
+@Table(name = "likses")
 public class Likes extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long likseId;
+    private Long liksesId;
 
 
     @Column(nullable = false)
@@ -28,7 +28,7 @@ public class Likes extends BaseEntity {
         this.likeCount =likeCount;
         //this.post = post;
         this.user = user;
-    } // 여윽시 나야 ? 아니 그럼 말을 해주셔야죵
+    }
 
     @ManyToOne
     @JoinColumn(name = "postId")

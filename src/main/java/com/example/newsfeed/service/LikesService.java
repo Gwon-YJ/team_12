@@ -54,7 +54,7 @@ public class LikesService {
 
     public void deleteLikes(Long Likesid, String customId) {
         Optional<Post> postId = postRepository.findById(Likesid);
-        Likes likesbyId = likesRepository.findByLikseId(Likesid);
+        Likes likesbyId = likesRepository.findByLiksesId(Likesid);
 
         Post post = postId.get();
 
