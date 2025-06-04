@@ -1,4 +1,4 @@
-package com.example.newsfeed.utils;
+package com.example.newsfeed.config;
 
 
 import at.favre.lib.crypto.bcrypt.BCrypt;

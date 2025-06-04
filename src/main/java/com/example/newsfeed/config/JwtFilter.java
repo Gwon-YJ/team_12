@@ -1,7 +1,5 @@
-package com.example.newsfeed.filer;
+package com.example.newsfeed.config;
 
-
-import com.example.newsfeed.utils.JwtUtil;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -35,8 +33,16 @@ public class JwtFilter implements Filter {
 
 
         // 처음 로그인 하는 거야? 그럼 JWT 토큰이 없을 것이니 토큰 먼저 발급 받아!
-        if(requestURI.equals("/api/login") || requestURI.equals("/api/signup")) {
+        if(requestURI.equals("/users/login") || requestURI.equals("/users/signup") || requestURI.equals("/users/{userId}")) {
             chain.doFilter(request,response);
+            return;
+        }
+
+        // 게시글 조회 필터 처리
+        String path = httpRequest.getRequestURI();
+
+        if (path.startsWith("/posts") && httpRequest.getMethod().equals("GET")) {
+            chain.doFilter(request, response); // 인증 없이 통과
             return;
         }
 
@@ -98,4 +104,3 @@ public class JwtFilter implements Filter {
         chain.doFilter(request, response);
     }
 }
-

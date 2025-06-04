@@ -27,10 +27,11 @@ public class Post extends BaseEntity {
     @Setter
     private Long likesCount = 0L;
 
+    @Setter
     private Long commentsCount = 0L;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "userId")
     private User user;
 
     public Post(){

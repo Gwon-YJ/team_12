@@ -1,15 +1,20 @@
 package com.example.newsfeed.controller;
 
-import com.example.newsfeed.dto.*;
+import com.example.newsfeed.config.JwtUtil;
+import com.example.newsfeed.dto.PostPageInfoResponseDto;
+import com.example.newsfeed.dto.PostPageRequestDto;
+import com.example.newsfeed.dto.PostRequestDto;
+import com.example.newsfeed.dto.PostResponseDto;
 import com.example.newsfeed.service.PostService;
-import com.example.newsfeed.utils.JwtUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -29,14 +34,14 @@ public class PostController {
             @RequestHeader("Authorization") String authorizationHeader,
             @Valid @RequestBody PostRequestDto requestDto) {
         String token = jwtUtil.extractBearerToken(authorizationHeader);  // "Bearer " 제거
-        String username = jwtUtil.extractUsername(token);
+        String customId = jwtUtil.extractCustomId(token);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(postService.createPost(username, requestDto.getTitle(), requestDto.getContent()));
+                .body(postService.createPost(customId, requestDto.getTitle(), requestDto.getContent()));
     }
 
-    //게시글 수정
+    // 게시글 수정
     @PutMapping("/{postId}")
     public ResponseEntity<PostResponseDto> updatePost(
             @PathVariable Long postId,
@@ -44,11 +49,11 @@ public class PostController {
             @Valid @RequestBody PostRequestDto requestDto) {
 
         String token = jwtUtil.extractBearerToken(authorizationHeader);  // "Bearer " 제거
-        String username = jwtUtil.extractUsername(token);
+        String customId = jwtUtil.extractCustomId(token);
 
         PostResponseDto response = postService.updatePost(
                 postId,
-                username,
+                customId,
                 requestDto.getTitle(),
                 requestDto.getContent());
 
@@ -72,17 +77,20 @@ public class PostController {
     // 게시글 날짜 범위로 검색(수정일자 기준 내림차순)
     @GetMapping
     public ResponseEntity<List<PostResponseDto>> searchPostsByDateRange(
-            @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") LocalDateTime startDate, @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") LocalDateTime endDate){
-        return new ResponseEntity<>(postService.searchPostsByDateRange(startDate, endDate), HttpStatus.OK);
+            @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") LocalDate startDate, @RequestParam @DateTimeFormat(pattern = "yyyyMMdd") LocalDate endDate){
+        LocalDateTime startDateTime = startDate.atStartOfDay();
+        LocalDateTime endDateTime = endDate.atTime(23, 59, 59);
+        return new ResponseEntity<>(postService.searchPostsByDateRange(startDateTime, endDateTime), HttpStatus.OK);
     }
 
     // 게시글 삭제
     @DeleteMapping("/{postId}")
-    public ResponseEntity<Void> deletePost(@PathVariable Long postId, @RequestHeader("Authorization") String token){
+    public ResponseEntity<Void> deletePost(@PathVariable Long postId, @RequestHeader("Authorization") String authorizationHeader){
 
-        String username = jwtUtil.extractRoles(token);
+        String token = jwtUtil.extractBearerToken(authorizationHeader);  // "Bearer " 제거
+        String customId = jwtUtil.extractCustomId(token);
 
-        postService.deletePost(postId, username);
+        postService.deletePost(postId, customId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -1,7 +1,5 @@
-package com.example.newsfeed.utils;
+package com.example.newsfeed.config;
 
-
-import com.example.newsfeed.enums.UserRoleEnum;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -18,8 +16,6 @@ import java.util.Date;
 public class JwtUtil {
     // JWT 토큰의 접두사
     public static final String BEARER_PREFIX = "Bearer ";
-    // JWT 토큰의 만료 시간 (밀리초 단위, 여기서는 60분)
-    private final long TOKEN_TIME = 60 * 60 * 1000L; // 60분
     // JWT 서명 알고리즘
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
     // 애플리케이션 설정 파일에서 주입받은 비밀 키
@@ -39,11 +35,11 @@ public class JwtUtil {
     }
 
     /**
-     * JWT 토큰에서 사용자 이름을 추출합니다.
+     * JWT 토큰에서 사용자 이메일을 추출합니다.
      * @param token JWT 토큰
-     * @return 사용자 이름
+     * @return 사용자 이메일
      */
-    public String extractUsername(String token) {
+    public String extractCustomId(String token) {
         return extractAllClaims(token).getSubject();
     }
 
@@ -63,18 +59,22 @@ public class JwtUtil {
 
     /**
      * JWT 토큰을 생성합니다.
-     * @param email 사용자 이름
+     * @param customId 사용자 이름
      * @param userRole 사용자의 역할 (권한)
      * @return 생성된 JWT 토큰
      */
-    public String generateToken(String email, UserRoleEnum userRole) {
+    public String generateToken(String customId, UserRoleEnum userRole) {
         Date date = new Date();
 
+        // JWT 토큰의 만료 시간 (밀리초 단위, 여기서는 60분)
+        // 60분
+        long TOKEN_TIME = 60 * 60 * 1000L;
         return BEARER_PREFIX +
                 Jwts.builder()
-                        .setSubject(email) // 사용자 식별자 (ID)
+                        .setSubject(customId) // 사용자 식별자 (ID)
                         .claim("auth", userRole) // 사용자 권한 (역할)
-                        .setExpiration(new Date(date.getTime() + TOKEN_TIME)) // 만료 시간 설정
+                        .claim("id", customId)
+                        .setExpiration(new Date(date.getTime() + TOKEN_TIME))// 만료 시간 설정
                         .setIssuedAt(date) // 발급 시간 설정
                         .signWith(key, signatureAlgorithm) // 비밀 키와 알고리즘으로 서명
                         .compact(); // JWT 토큰 생성

@@ -28,15 +28,15 @@ public class Likes extends BaseEntity {
         this.likeCount =likeCount;
         //this.post = post;
         this.user = user;
-    }
+    } // 여윽시 나야 ? 아니 그럼 말을 해주셔야죵
 
     @ManyToOne
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "postId")
     @Setter
     private Post post;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "userId")
     @Setter
     private User user;
 }

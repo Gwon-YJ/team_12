@@ -43,7 +43,7 @@ public class PostPageResponseDto {
 
         return new PostPageResponseDto(
                 post.getPostId(),
-                post.getUser().getUsername(),
+                post.getUser().getUserName(),
                 post.getTitle(),
                 post.getContent(),
                 post.getLikesCount(),

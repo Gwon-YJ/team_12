@@ -41,7 +41,7 @@ public class PostResponseDto {
     public static PostResponseDto toDto(Post post) {
         return new PostResponseDto(
                 post.getPostId(),
-                post.getUser().getUsername(),
+                post.getUser().getUserName(),
                 post.getTitle(),
                 post.getContent(),
                 post.getLikesCount(),
