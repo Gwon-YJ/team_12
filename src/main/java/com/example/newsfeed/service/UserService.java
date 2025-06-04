@@ -10,6 +10,7 @@ import com.example.newsfeed.exception.CustomException;
 import com.example.newsfeed.exception.ErrorType;
 import com.example.newsfeed.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.web.error.Error;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -28,11 +29,11 @@ public class UserService {
 
 
         User user = userRepository.findByEmail(email).orElseThrow(
-                () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
+                () -> new CustomException(ErrorType.PASSWORD_EMAIL_MISMATCH)
         );
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new CustomException(ErrorType.PASSWORD_EMAIL_MISMATCH);
         }
 
         return jwtUtil.generateToken(user.getCustomId(), user.getRole());
