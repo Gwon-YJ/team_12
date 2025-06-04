@@ -2053,7 +2053,7 @@ localhost:8080/follow/followers
 ## 00.개요<br>
 URL : /Follow/{followId}<br>
 HTTP METHOD : DELETE<br>
-설명 : 단일 댓글 정보를 삭제하는 API 입니다. <br>
+설명 : 특정 사용자의 팔로우를 취소하는 api입니다. <br>
 
 
 ## 01.요청(Request)
