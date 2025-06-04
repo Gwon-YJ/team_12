@@ -2,10 +2,12 @@ package com.example.newsfeed.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Entity
+@NoArgsConstructor // 이거 최고네
 @Table(name = "follows")
 public class Follow extends BaseEntity{
 
@@ -14,33 +16,19 @@ public class Follow extends BaseEntity{
     private Long followId;
 
 
-    @Column(nullable = false)
-    private Long follows;
+    // 팔로우 거는 사람
+    @ManyToOne
+    @JoinColumn(name = "followerId", nullable = false)
+    private User follower;
 
-    public Follow(){}
+    // 팔로우 대상
+    @ManyToOne
+    @JoinColumn(name = "followingId", nullable = false)
+    private User following;
 
-    public Follow(Long follows){
-        this.follows =follows;
+    public Follow(User follower, User following) {
+        this.follower = follower;
+        this.following = following;
     }
-
-    @ManyToOne
-    @JoinColumn(name = "like_id")
-    @Setter
-    private Likes like;
-
-    @ManyToOne
-    @JoinColumn(name = "comment_id")
-    @Setter
-    private Comment comment;
-
-    @ManyToOne
-    @JoinColumn(name = "post_id")
-    @Setter
-    private Post post;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    @Setter
-    private User user;
 
 }
